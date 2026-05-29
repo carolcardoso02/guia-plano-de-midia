@@ -1,0 +1,1639 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guia Técnico — Squad Plano de Mídia Paga</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --base-950:#00000f;
+  --base-900:#080818;
+  --base-800:#12122a;
+  --base-700:#2a2e3d;
+  --base-600:#3a3f52;
+  --base-500:#555b6e;
+  --base-400:#8a90a0;
+  --base-300:#c8ccd4;
+  --base-200:#dce0e8;
+  --base-100:#e8ecf2;
+  --base-50:#f0f2f5;
+  --blue-700:#0047cc;
+  --blue-500:#1a6eff;
+  --blue-400:#4d8fff;
+  --blue-glow:rgba(26,110,255,.15);
+  --blue-glow-strong:rgba(26,110,255,.3);
+  --green-500:#38b109;
+  --green-400:#44cc12;
+  --green-300:#5ddb2e;
+  --green-glow:rgba(56,177,9,.15);
+  --amber:#f0c040;
+  --cyan:#40def8;
+  --term-bg:#020210;
+  --radius-sm:.5rem;
+  --radius-md:.875rem;
+  --radius-lg:1.25rem;
+  --radius-full:9999px;
+  --container:1100px;
+  --section-py:clamp(3.5rem,7vw,6rem);
+  --section-px:clamp(1.25rem,5vw,2.5rem);
+  --font-display:'Plus Jakarta Sans',system-ui,sans-serif;
+  --font-body:'DM Sans',system-ui,sans-serif;
+  --font-mono:'Courier New',monospace;
+  --ease-out:cubic-bezier(.16,1,.3,1);
+}
+
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--base-950);color:var(--base-300);line-height:1.65;overflow-x:hidden}
+::selection{background:var(--blue-glow-strong);color:var(--blue-400)}
+
+body::after{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:9999;opacity:.45;
+}
+
+/* ── PROGRESS BAR ── */
+#progress-bar{
+  position:fixed;top:0;left:0;height:2px;width:0%;
+  background:linear-gradient(90deg,var(--blue-500),var(--blue-400));
+  z-index:200;transition:width .1s linear;
+}
+
+/* ── NAV ── */
+.nav{
+  position:fixed;top:0;left:0;right:0;height:56px;z-index:100;
+  background:rgba(0,0,15,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--base-800);
+  display:flex;align-items:center;padding:0 2rem;gap:1.5rem;
+}
+.nav-brand{
+  display:flex;align-items:center;gap:.625rem;
+  font-family:var(--font-display);font-size:.8125rem;font-weight:700;
+  color:var(--base-200);text-decoration:none;white-space:nowrap;
+}
+.nav-live{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--blue-500);box-shadow:0 0 6px var(--blue-500);
+  animation:pulse 2s infinite;flex-shrink:0;
+}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.nav-steps{display:flex;align-items:center;gap:6px;margin-left:auto}
+.nav-step{height:2px;width:18px;border-radius:1px;background:var(--base-700);cursor:pointer;transition:all .25s}
+.nav-step.active{width:28px;background:var(--blue-500)}
+.nav-step:hover{background:var(--blue-400)}
+.nav-btn{
+  font-family:var(--font-display);font-size:.8rem;font-weight:600;
+  padding:.45rem 1rem;border-radius:var(--radius-full);
+  background:linear-gradient(135deg,var(--blue-500),var(--blue-700));
+  color:#fff;text-decoration:none;
+  box-shadow:0 2px 12px var(--blue-glow-strong);
+  white-space:nowrap;transition:all .25s;border:none;cursor:pointer;
+}
+.nav-btn:hover{transform:translateY(-1px);box-shadow:0 4px 20px var(--blue-glow-strong)}
+
+/* ── HERO ── */
+.hero{
+  position:relative;min-height:100vh;
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  padding:calc(56px + 4rem) var(--section-px) 4rem;overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 20%,rgba(26,110,255,.07),transparent 70%),
+             linear-gradient(to bottom,var(--base-950),var(--base-900));
+  z-index:0;
+}
+.hero-particles{position:absolute;inset:0;z-index:1;overflow:hidden}
+.particle{
+  position:absolute;width:2px;height:2px;background:var(--blue-500);
+  border-radius:50%;opacity:0;animation:float-particle linear infinite;
+}
+@keyframes float-particle{
+  0%{transform:translateY(100vh) translateX(0);opacity:0}
+  10%{opacity:.6}90%{opacity:.3}
+  100%{transform:translateY(-10vh) translateX(40px);opacity:0}
+}
+.hero-content{position:relative;z-index:2;max-width:860px;margin:0 auto}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:var(--blue-glow);border:1px solid rgba(26,110,255,.3);
+  border-radius:var(--radius-full);padding:.35rem 1.25rem;
+  font-family:var(--font-display);font-size:.75rem;font-weight:600;
+  color:var(--blue-400);letter-spacing:.04em;margin-bottom:1.5rem;
+}
+.hero-badge-dot{width:5px;height:5px;border-radius:50%;background:var(--blue-400)}
+.hero h1{
+  font-family:var(--font-display);font-weight:800;
+  font-size:clamp(2.25rem,5.5vw + .5rem,4.25rem);
+  line-height:1.08;letter-spacing:-.025em;color:var(--base-50);margin-bottom:1.5rem;
+}
+.hero h1 em{
+  font-style:normal;
+  background:linear-gradient(135deg,var(--blue-500),var(--blue-400));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-sub{
+  font-size:clamp(1rem,.5vw + .875rem,1.125rem);color:var(--base-400);
+  max-width:580px;margin:0 auto 3rem;line-height:1.7;
+}
+.hero-stats{display:flex;justify-content:center;gap:2.5rem;flex-wrap:wrap;margin-bottom:2.5rem}
+.stat-item{display:flex;flex-direction:column;align-items:center;gap:.25rem}
+.stat-num{
+  font-family:var(--font-display);font-size:3rem;font-weight:800;
+  background:linear-gradient(135deg,var(--blue-500),var(--blue-400));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;
+}
+.stat-label{font-size:.8rem;font-weight:500;color:var(--base-500);text-transform:uppercase;letter-spacing:.08em}
+.hero-ctas{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-family:var(--font-display);font-size:.9375rem;font-weight:700;
+  padding:.875rem 1.875rem;border-radius:var(--radius-md);
+  background:linear-gradient(135deg,var(--blue-500),var(--blue-700));
+  color:#fff;text-decoration:none;
+  box-shadow:0 4px 24px var(--blue-glow-strong);
+  transition:all .25s;border:none;cursor:pointer;
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 32px var(--blue-glow-strong)}
+.btn-ghost{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-family:var(--font-display);font-size:.9375rem;font-weight:600;
+  padding:.875rem 1.875rem;border-radius:var(--radius-md);
+  background:transparent;border:1px solid var(--base-600);
+  color:var(--base-300);text-decoration:none;transition:all .25s;cursor:pointer;
+}
+.btn-ghost:hover{border-color:var(--blue-400);color:var(--blue-400)}
+
+/* ── SECTIONS ── */
+.section{padding:var(--section-py) var(--section-px);max-width:calc(var(--container) + 2*var(--section-px));margin:0 auto}
+.section-dark{background:var(--base-900);max-width:100%;padding:var(--section-py) var(--section-px)}
+.section-dark-inner{max-width:var(--container);margin:0 auto}
+
+.eyebrow{
+  display:inline-flex;align-items:center;gap:.625rem;
+  font-family:var(--font-display);font-size:.7rem;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--blue-400);margin-bottom:1rem;
+}
+.eyebrow::before{content:'';display:block;width:24px;height:2px;background:linear-gradient(90deg,var(--blue-500),transparent)}
+.section-title{
+  font-family:var(--font-display);font-weight:800;
+  font-size:clamp(1.75rem,3.5vw + .25rem,2.75rem);
+  color:var(--base-50);letter-spacing:-.02em;line-height:1.1;margin-bottom:.75rem;
+}
+.section-title em{
+  font-style:normal;
+  background:linear-gradient(135deg,var(--blue-500),var(--blue-400));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.section-desc{font-size:clamp(.9375rem,.3vw + .875rem,1.0625rem);color:var(--base-400);max-width:640px;line-height:1.7;margin-bottom:3rem}
+
+/* ── OVERVIEW CARDS ── */
+.overview-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem}
+.ov-card{
+  background:var(--base-800);border:1px solid var(--base-700);
+  border-top:2px solid var(--blue-500);border-radius:var(--radius-md);
+  padding:1.5rem;transition:all .3s;
+}
+.ov-card:hover{transform:translateY(-3px);border-color:var(--blue-500);box-shadow:0 0 24px var(--blue-glow)}
+.ov-icon{
+  width:40px;height:40px;background:var(--blue-glow);border:1px solid rgba(26,110,255,.25);
+  border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;margin-bottom:1rem;
+}
+.ov-card h3{font-family:var(--font-display);font-size:.9375rem;font-weight:700;color:var(--base-100);margin-bottom:.4rem}
+.ov-card p{font-size:.8125rem;color:var(--base-400);line-height:1.6}
+
+/* ── STEP BLOCKS ── */
+.step-block{
+  display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;
+  align-items:start;padding:3rem 0;border-bottom:1px solid var(--base-800);
+}
+.step-block:last-child{border-bottom:none}
+.step-block.reverse{direction:rtl}
+.step-block.reverse>*{direction:ltr}
+
+.step-counter{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem}
+.step-num{
+  font-family:var(--font-display);font-size:4rem;font-weight:800;line-height:1;
+  background:linear-gradient(135deg,var(--blue-500),var(--blue-400));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  min-width:80px;
+}
+.step-badge{
+  font-family:var(--font-display);font-size:.65rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;padding:.3rem .75rem;border-radius:var(--radius-full);
+}
+.step-badge.checkpoint{background:rgba(240,192,64,.12);border:1px solid rgba(240,192,64,.3);color:var(--amber)}
+.step-badge.auto{background:var(--blue-glow);border:1px solid rgba(26,110,255,.3);color:var(--blue-400)}
+
+.step-h{
+  font-family:var(--font-display);font-weight:800;
+  font-size:clamp(1.25rem,2.5vw,1.75rem);color:var(--base-50);
+  letter-spacing:-.02em;line-height:1.15;margin-bottom:.75rem;
+}
+.step-h em{font-style:normal;color:var(--blue-400)}
+.step-lead{font-size:.9375rem;color:var(--base-400);line-height:1.75;margin-bottom:1.5rem}
+.agent-chip{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:var(--base-800);border:1px solid var(--base-700);
+  border-radius:var(--radius-full);padding:.35rem .875rem;
+  font-size:.75rem;font-weight:600;color:var(--base-300);margin-bottom:1.25rem;
+}
+.agent-chip-dot{width:6px;height:6px;border-radius:50%;background:var(--blue-500)}
+.checklist{list-style:none;display:flex;flex-direction:column;gap:.75rem}
+.checklist li{display:flex;align-items:flex-start;gap:.75rem;font-size:.875rem;color:var(--base-300);line-height:1.55}
+.ci{
+  width:22px;height:22px;border-radius:50%;background:var(--blue-glow);
+  border:1px solid rgba(26,110,255,.25);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-size:.65rem;font-weight:800;color:var(--blue-400);
+  flex-shrink:0;margin-top:.1rem;
+}
+
+/* ── TERMINAL WINDOW ── */
+.term-win{
+  background:var(--term-bg);
+  border:1px solid var(--base-700);
+  border-radius:var(--radius-md);
+  overflow:hidden;
+  font-family:var(--font-mono);
+}
+.term-bar{
+  background:var(--base-800);
+  padding:.55rem .875rem;
+  display:flex;align-items:center;gap:.625rem;
+  border-bottom:1px solid var(--base-700);
+}
+.term-dots{display:flex;gap:.35rem}
+.term-dot{width:10px;height:10px;border-radius:50%}
+.term-dot.r{background:#ff5f56}.term-dot.y{background:#ffbd2e}.term-dot.g{background:#27c93f}
+.term-title{
+  font-family:var(--font-display);font-size:.7rem;font-weight:600;
+  color:var(--base-500);letter-spacing:.04em;
+}
+.term-body{padding:1.125rem 1.25rem;font-size:.7875rem;line-height:1.9}
+.term-line{display:block}
+.tg{color:#44cc12}       /* green — ok */
+.ta{color:#f0c040}       /* amber — warn */
+.tb{color:#61afef}       /* blue — info */
+.tc{color:#40def8}       /* cyan — cmd */
+.tm{color:var(--base-400)}
+.tw{color:#e5c07b}       /* warm — string */
+.td{color:var(--base-600);font-style:italic}  /* dim comment */
+.t-indent{display:block;padding-left:1.25rem}
+.t-indent2{display:block;padding-left:2.5rem}
+.t-sep{display:block;border-top:1px solid rgba(255,255,255,.04);margin:.5rem 0}
+.t-block{
+  display:block;
+  background:rgba(255,255,255,.02);
+  border-left:2px solid rgba(26,110,255,.35);
+  padding:.4rem .75rem;margin:.35rem 0;
+  border-radius:0 4px 4px 0;
+}
+
+/* ── CMD BLOCK ── */
+.cmd-block{
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  background:var(--term-bg);border:1px solid var(--base-700);
+  border-radius:var(--radius-md);padding:.875rem 1.25rem;margin-top:1rem;
+}
+.cmd-block code{font-family:var(--font-mono);font-size:.875rem;color:var(--green-300);word-break:break-all}
+.copy-btn{
+  flex-shrink:0;background:var(--base-800);border:1px solid var(--base-600);
+  border-radius:var(--radius-sm);padding:.3rem .75rem;
+  font-family:var(--font-display);font-size:.7rem;font-weight:600;
+  color:var(--base-400);cursor:pointer;letter-spacing:.05em;transition:all 150ms var(--ease-out);
+}
+.copy-btn:hover,.copy-btn.copied{background:var(--green-glow);border-color:var(--green-500);color:var(--green-400)}
+
+/* ── PIPELINE LIST ── */
+.pipeline-list{display:flex;flex-direction:column;gap:0;max-width:700px;margin:0 auto}
+.pl-item{display:flex;gap:1.5rem;align-items:flex-start;padding:1.25rem 0;position:relative}
+.pl-item:not(:last-child)::after{
+  content:'';position:absolute;left:15px;top:48px;
+  width:1px;height:calc(100% - 24px);
+  background:linear-gradient(to bottom,rgba(26,110,255,.3),rgba(26,110,255,.05));
+}
+.pl-num{
+  width:32px;height:32px;border-radius:50%;
+  background:linear-gradient(135deg,var(--blue-500),var(--blue-700));
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-size:.7rem;font-weight:800;color:#fff;
+  flex-shrink:0;position:relative;z-index:1;
+  box-shadow:0 0 12px var(--blue-glow-strong);
+}
+.pl-content{padding-top:.1rem}
+.pl-content h4{font-family:var(--font-display);font-size:.875rem;font-weight:700;color:var(--base-100);margin-bottom:.2rem}
+.pl-content p{font-size:.8125rem;color:var(--base-500);line-height:1.5}
+.pl-agent{display:inline-block;font-size:.7rem;font-weight:700;color:var(--blue-400);font-family:var(--font-display);letter-spacing:.04em;text-transform:uppercase;margin-top:.35rem}
+.pl-tags{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.5rem}
+.pl-tag{font-size:.65rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:.2rem .6rem;border-radius:var(--radius-full)}
+.pl-tag.auto{background:var(--blue-glow);border:1px solid rgba(26,110,255,.2);color:var(--blue-400)}
+.pl-tag.checkpoint{background:rgba(240,192,64,.1);border:1px solid rgba(240,192,64,.2);color:var(--amber)}
+.pl-tag.output{background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.2);color:#a78bfa}
+
+/* ── AGENTS GRID ── */
+.agents-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem}
+.agent-card{
+  background:var(--base-800);border:1px solid var(--base-700);
+  border-top:2px solid var(--blue-500);border-radius:var(--radius-md);
+  padding:1.25rem;transition:all .3s;
+}
+.agent-card:hover{transform:translateY(-3px);border-color:var(--blue-500);box-shadow:0 0 24px var(--blue-glow)}
+.agent-header{display:flex;align-items:flex-start;gap:.875rem;margin-bottom:1rem}
+.agent-avatar{
+  width:44px;height:44px;border-radius:var(--radius-sm);
+  background:linear-gradient(135deg,var(--blue-glow-strong),var(--blue-glow));
+  border:1px solid rgba(26,110,255,.3);
+  display:flex;align-items:center;justify-content:center;font-size:1.25rem;flex-shrink:0;
+}
+.agent-meta h3{font-family:var(--font-display);font-size:.9375rem;font-weight:700;color:var(--base-50);margin-bottom:.2rem}
+.agent-role{font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--blue-400)}
+.agent-desc{font-size:.8125rem;color:var(--base-400);line-height:1.6;margin-bottom:1rem}
+.agent-step{display:flex;align-items:center;gap:.5rem;font-size:.75rem;font-weight:600;color:var(--base-500);font-family:var(--font-display)}
+.agent-step-num{
+  width:20px;height:20px;border-radius:50%;background:var(--base-700);
+  display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;color:var(--blue-400);
+}
+
+/* ── LEIS ── */
+.leis-grid{display:flex;flex-direction:column;gap:0}
+.lei-item{
+  display:grid;grid-template-columns:min-content 1fr;gap:1.5rem;
+  align-items:start;padding:1.75rem 0;border-bottom:1px solid var(--base-800);
+}
+.lei-item:last-child{border-bottom:none}
+.lei-num{
+  font-family:var(--font-display);font-size:3.5rem;font-weight:800;line-height:1;
+  background:linear-gradient(135deg,var(--blue-500),var(--blue-400));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-align:right;
+}
+.lei-content h3{font-family:var(--font-display);font-size:1rem;font-weight:700;color:var(--base-50);margin-bottom:.5rem}
+.lei-content p{font-size:.875rem;color:var(--base-400);line-height:1.7}
+
+/* ── GLOSSARY ── */
+.glossary-cats{display:flex;flex-direction:column;gap:2.5rem}
+.glos-cat-header{display:flex;align-items:center;gap:1rem;margin-bottom:1.25rem}
+.glos-cat-label{font-family:var(--font-display);font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue-400)}
+.glos-cat-line{flex:1;height:1px;background:linear-gradient(90deg,rgba(26,110,255,.3),transparent)}
+.glossary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:.75rem}
+.glos-item{
+  background:var(--base-800);border:1px solid var(--base-700);
+  border-left:3px solid var(--blue-500);border-radius:var(--radius-md);
+  padding:1rem 1.25rem;transition:border-color .25s;
+}
+.glos-item:hover{border-left-color:var(--blue-400)}
+.glos-term{font-family:var(--font-display);font-size:.875rem;font-weight:700;color:var(--base-100);margin-bottom:.3rem}
+.glos-def{font-size:.8125rem;color:var(--base-400);line-height:1.6}
+.glos-example{margin-top:.5rem;font-size:.75rem;color:var(--blue-400);font-style:italic}
+
+/* ── FINAL ── */
+.final-section{
+  background:var(--base-950);padding:var(--section-py) var(--section-px);
+  text-align:center;position:relative;overflow:hidden;
+}
+.final-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 50% 60% at 50% 100%,rgba(26,110,255,.06),transparent)}
+.final-section>*{position:relative;z-index:1}
+.final-title{
+  font-family:var(--font-display);font-weight:800;
+  font-size:clamp(1.75rem,4vw + .25rem,3rem);
+  color:var(--base-50);letter-spacing:-.025em;line-height:1.1;
+  margin:0 auto 1rem;max-width:700px;
+}
+.final-title span{
+  background:linear-gradient(135deg,var(--blue-500),var(--blue-400));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.final-desc{font-size:1.0625rem;color:var(--base-400);max-width:500px;margin:0 auto 2.5rem;line-height:1.7}
+
+/* ── INSTALL SECTION ── */
+.install-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+.install-step-list{display:flex;flex-direction:column;gap:1.125rem;margin-top:1.75rem}
+.install-step{display:flex;gap:1rem;align-items:flex-start}
+.install-step-num{
+  width:28px;height:28px;border-radius:50%;flex-shrink:0;margin-top:.1rem;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-size:.75rem;font-weight:800;
+}
+.isn-blue{background:linear-gradient(135deg,var(--blue-500),var(--blue-700));color:#fff}
+.isn-amber{background:rgba(240,192,64,.15);border:1px solid rgba(240,192,64,.35);color:var(--amber)}
+.install-step-content h4{font-family:var(--font-display);font-size:.9rem;font-weight:700;color:var(--base-100);margin-bottom:.2rem}
+.install-step-content p{font-size:.8125rem;color:var(--base-400);line-height:1.6}
+.install-step-content strong{color:var(--base-100);font-weight:600}
+.install-note{
+  background:rgba(240,192,64,.05);border:1px solid rgba(240,192,64,.2);
+  border-radius:var(--radius-md);padding:.875rem 1.125rem;
+  font-size:.8125rem;color:var(--base-400);line-height:1.6;
+  display:flex;gap:.625rem;align-items:flex-start;margin-top:1.25rem;
+}
+.install-note b{color:var(--amber)}
+
+.browser-mock{background:var(--base-800);border:1px solid var(--base-700);border-radius:var(--radius-md);overflow:hidden}
+.browser-bar{
+  background:var(--base-900);padding:.55rem .875rem;
+  display:flex;align-items:center;gap:.625rem;
+  border-bottom:1px solid var(--base-700);
+}
+.browser-dots{display:flex;gap:.35rem}
+.browser-dot{width:10px;height:10px;border-radius:50%}
+.browser-dot.r{background:#ff5f56}.browser-dot.y{background:#ffbd2e}.browser-dot.g{background:#27c93f}
+.browser-url{
+  flex:1;background:rgba(0,0,0,.25);border:1px solid var(--base-700);
+  border-radius:4px;padding:.25rem .625rem;
+  font-family:var(--font-mono);font-size:.68rem;color:var(--base-500);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.browser-body{padding:1.125rem 1.25rem}
+.mkt-squad-card{
+  background:var(--base-700);border:1px solid var(--base-600);
+  border-radius:var(--radius-md);padding:1rem;margin-bottom:.875rem;
+}
+.mkt-badge{
+  display:inline-flex;align-items:center;gap:.375rem;
+  font-family:var(--font-display);font-size:.65rem;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;
+  background:var(--blue-glow);border:1px solid rgba(26,110,255,.25);
+  color:var(--blue-400);padding:.2rem .625rem;border-radius:var(--radius-full);
+  margin-bottom:.625rem;
+}
+.mkt-name{font-family:var(--font-display);font-size:.9375rem;font-weight:800;color:var(--base-50);margin-bottom:.25rem}
+.mkt-author{font-size:.7rem;color:var(--base-500);margin-bottom:.75rem;font-family:var(--font-mono)}
+.mkt-meta{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.875rem}
+.mkt-tag{font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:.2rem .5rem;border-radius:3px;background:rgba(255,255,255,.06);color:var(--base-400)}
+.mkt-install-btn{
+  display:flex;align-items:center;justify-content:center;gap:.5rem;
+  width:100%;padding:.6rem;border-radius:var(--radius-sm);
+  background:linear-gradient(135deg,var(--blue-500),var(--blue-700));
+  font-family:var(--font-display);font-size:.8rem;font-weight:700;color:#fff;
+  border:none;cursor:default;
+  box-shadow:0 2px 12px var(--blue-glow-strong);
+}
+
+/* ── ANALOGY SECTION ── */
+.analogy-intro{
+  max-width:640px;margin:0 auto 3rem;text-align:center;
+}
+.analogy-comparison{
+  display:grid;grid-template-columns:1fr 40px 1fr;gap:0;
+  border:1px solid var(--base-700);border-radius:var(--radius-lg);overflow:hidden;
+  max-width:860px;margin:0 auto;
+}
+.analogy-col-header{
+  padding:.875rem 1.25rem;
+  font-family:var(--font-display);font-size:.75rem;font-weight:800;
+  letter-spacing:.1em;text-transform:uppercase;
+  display:flex;align-items:center;gap:.625rem;
+}
+.analogy-col-header.left{background:rgba(26,110,255,.08);color:var(--blue-400);border-bottom:1px solid var(--base-700)}
+.analogy-col-header.right{background:rgba(26,110,255,.04);color:var(--blue-300);border-bottom:1px solid var(--base-700)}
+.analogy-connector-header{
+  background:var(--base-800);
+  border-bottom:1px solid var(--base-700);
+  border-left:1px solid var(--base-700);border-right:1px solid var(--base-700);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.8rem;color:var(--base-600);
+}
+.analogy-row{display:contents}
+.analogy-row:hover .analogy-cell{background:rgba(255,255,255,.015)}
+.analogy-cell{
+  padding:1rem 1.25rem;
+  border-bottom:1px solid rgba(255,255,255,.04);
+  display:flex;align-items:flex-start;gap:.75rem;
+}
+.analogy-cell.right{
+  border-left:1px solid rgba(255,255,255,.04);
+  background:rgba(26,110,255,.03);
+}
+.analogy-connector-cell{
+  background:var(--base-900);
+  border-bottom:1px solid rgba(255,255,255,.04);
+  border-left:1px solid var(--base-700);border-right:1px solid var(--base-700);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.8rem;color:var(--base-600);
+}
+.analogy-row:last-child .analogy-cell{border-bottom:none}
+.analogy-row:last-child .analogy-connector-cell{border-bottom:none}
+.analogy-icon{font-size:1.25rem;flex-shrink:0;line-height:1;margin-top:.1rem}
+.analogy-item h4{font-family:var(--font-display);font-size:.875rem;font-weight:700;color:var(--base-100);margin-bottom:.15rem}
+.analogy-item p{font-size:.775rem;color:var(--base-500);line-height:1.5}
+.analogy-item.highlight h4{color:var(--blue-400)}
+
+@media(max-width:768px){
+  .install-grid{grid-template-columns:1fr}
+  .analogy-comparison{grid-template-columns:1fr 24px 1fr}
+  .analogy-cell{padding:.75rem .875rem}
+}
+
+/* ── GLOSSARY REDESIGN ── */
+.glos-tip{
+  display:flex;align-items:flex-start;gap:.75rem;
+  background:rgba(26,110,255,.08);border:1px solid rgba(26,110,255,.15);
+  border-radius:var(--radius-md);padding:1rem 1.25rem;
+  font-size:.8125rem;color:var(--base-400);line-height:1.6;
+  margin-bottom:2.5rem;
+}
+.glos-featured{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:3rem;
+}
+.glos-feat-card{
+  position:relative;overflow:hidden;
+  border-radius:var(--radius-lg);padding:1.75rem 1.5rem;
+  border:1px solid var(--base-700);
+}
+.glos-feat-blue{background:linear-gradient(135deg,rgba(26,110,255,.12),rgba(26,110,255,.04));border-color:rgba(26,110,255,.25)}
+.glos-feat-amber{background:linear-gradient(135deg,rgba(240,192,64,.1),rgba(240,192,64,.03));border-color:rgba(240,192,64,.2)}
+.glos-feat-purple{background:linear-gradient(135deg,rgba(167,139,250,.1),rgba(167,139,250,.03));border-color:rgba(167,139,250,.2)}
+.glos-feat-bg{
+  position:absolute;right:-8px;bottom:-16px;
+  font-family:var(--font-display);font-size:4.5rem;font-weight:800;
+  opacity:.06;line-height:1;letter-spacing:-.04em;color:#fff;
+  pointer-events:none;user-select:none;
+}
+.glos-feat-tag{
+  display:inline-block;
+  font-family:var(--font-display);font-size:.65rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
+  padding:.25rem .75rem;border-radius:var(--radius-full);
+  background:var(--blue-glow);border:1px solid rgba(26,110,255,.25);
+  color:var(--blue-400);margin-bottom:.875rem;
+}
+.glos-feat-tag-amber{background:rgba(240,192,64,.12);border-color:rgba(240,192,64,.25);color:var(--amber)}
+.glos-feat-tag-purple{background:rgba(167,139,250,.1);border-color:rgba(167,139,250,.25);color:#a78bfa}
+.glos-feat-term{
+  font-family:var(--font-display);font-size:1.0625rem;font-weight:800;
+  color:var(--base-50);line-height:1.25;margin-bottom:.625rem;
+}
+.glos-feat-def{font-size:.8125rem;color:var(--base-400);line-height:1.7}
+
+.glos-block{margin-bottom:2rem}
+.glos-block-header{
+  display:flex;align-items:center;gap:.75rem;
+  padding:.7rem 1.25rem;
+  border-radius:var(--radius-md) var(--radius-md) 0 0;
+}
+.glos-header-cyan{background:rgba(64,222,248,.06);border:1px solid rgba(64,222,248,.15);border-bottom:none}
+.glos-header-amber{background:rgba(240,192,64,.05);border:1px solid rgba(240,192,64,.15);border-bottom:none}
+.glos-header-green{background:rgba(68,204,18,.05);border:1px solid rgba(68,204,18,.15);border-bottom:none}
+.glos-header-purple{background:rgba(167,139,250,.05);border:1px solid rgba(167,139,250,.15);border-bottom:none}
+.glos-block-icon{font-size:.9rem;line-height:1}
+.glos-block-label{
+  font-family:var(--font-display);font-size:.7rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--base-300);
+}
+.glos-table{
+  border:1px solid var(--base-700);
+  border-radius:0 0 var(--radius-md) var(--radius-md);
+  overflow:hidden;
+}
+.glos-row{display:grid;grid-template-columns:170px 1fr}
+.glos-row:not(:last-child){border-bottom:1px solid rgba(255,255,255,.04)}
+.glos-row:hover{background:rgba(255,255,255,.015);transition:background .2s}
+.glos-row-term{
+  padding:1.125rem 1.25rem;
+  border-right:1px solid rgba(255,255,255,.04);
+  display:flex;flex-direction:column;justify-content:center;
+  background:rgba(0,0,0,.18);
+}
+.glos-row-name{
+  font-family:var(--font-display);font-size:.875rem;font-weight:800;
+  line-height:1.3;margin-bottom:.2rem;
+}
+.glos-name-blue{color:var(--blue-400)}
+.glos-name-cyan{color:#40def8}
+.glos-name-amber{color:var(--amber)}
+.glos-name-green{color:#44cc12}
+.glos-name-purple{color:#a78bfa}
+.glos-row-abbr{font-size:.68rem;color:var(--base-600);font-family:var(--font-mono);margin-top:.15rem}
+.glos-row-def{padding:1.125rem 1.25rem;display:flex;flex-direction:column;justify-content:center}
+.glos-row-text{font-size:.8125rem;color:var(--base-300);line-height:1.65}
+.glos-row-ex{
+  margin-top:.5rem;font-size:.75rem;font-style:italic;
+  color:var(--base-500);display:flex;align-items:flex-start;gap:.4rem;
+}
+.glos-row-ex::before{content:'→';flex-shrink:0;color:var(--base-600)}
+
+@media(max-width:640px){
+  .glos-featured{grid-template-columns:1fr}
+  .glos-row{grid-template-columns:1fr}
+  .glos-row-term{border-right:none;border-bottom:1px solid rgba(255,255,255,.04);background:rgba(0,0,0,.3)}
+}
+
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .55s var(--ease-out),transform .55s var(--ease-out)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-d1{transition-delay:.12s}.reveal-d2{transition-delay:.24s}
+.reveal-d3{transition-delay:.36s}.reveal-d4{transition-delay:.48s}
+
+/* ── EXPORT BTN ── */
+#export-btn{
+  position:fixed;bottom:1.5rem;right:1.5rem;z-index:150;
+  display:flex;align-items:center;gap:.5rem;
+  font-family:var(--font-display);font-size:.8rem;font-weight:700;
+  padding:.7rem 1.25rem;border-radius:var(--radius-full);
+  background:linear-gradient(135deg,var(--blue-500),var(--blue-700));
+  color:#fff;border:none;cursor:pointer;
+  box-shadow:0 4px 20px var(--blue-glow-strong);transition:all .25s;
+}
+#export-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px var(--blue-glow-strong)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .step-block{grid-template-columns:1fr}
+  .step-block.reverse{direction:ltr}
+  .nav-steps{display:none}
+  .hero-stats{gap:1.5rem}
+  .stat-num{font-size:2.25rem}
+}
+@media(max-width:640px){
+  .agents-grid,.glossary-grid,.overview-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<nav class="nav">
+  <a href="#" class="nav-brand">
+    <span class="nav-live"></span>
+    Squad Plano de Mídia
+  </a>
+  <div class="nav-steps">
+    <div class="nav-step active"></div>
+    <div class="nav-step"></div>
+    <div class="nav-step"></div>
+    <div class="nav-step"></div>
+    <div class="nav-step"></div>
+    <div class="nav-step"></div>
+  </div>
+  <button class="nav-btn" onclick="window.print()">Exportar PDF</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-bg"></div>
+  <div class="hero-particles" id="particles"></div>
+  <div class="hero-content">
+    <div class="hero-badge reveal">
+      <span class="hero-badge-dot"></span>
+      Guia Técnico · Meta Ads · Automação com IA
+    </div>
+    <h1 class="reveal reveal-d1">
+      Squad <em>Plano de<br>Mídia Paga</em>
+    </h1>
+    <p class="hero-sub reveal reveal-d2">
+      Um time de agentes especializados que trabalha de forma sequencial para produzir planos de mídia, estratégias de campanha e criativos de anúncios com precisão técnica.
+    </p>
+    <div class="hero-stats reveal reveal-d3">
+      <div class="stat-item"><span class="stat-num">08</span><span class="stat-label">Passos</span></div>
+      <div class="stat-item"><span class="stat-num">06</span><span class="stat-label">Agentes</span></div>
+      <div class="stat-item"><span class="stat-num">03</span><span class="stat-label">Checkpoints</span></div>
+      <div class="stat-item"><span class="stat-num">07</span><span class="stat-label">Leis de Ouro</span></div>
+    </div>
+    <div class="hero-ctas reveal reveal-d4">
+      <a href="#instalacao" class="btn-primary">Como Instalar →</a>
+      <a href="#o-que-e" class="btn-ghost">O que é um Plano de Mídia</a>
+      <a href="#pipeline" class="btn-ghost">Ver o Pipeline</a>
+      <a href="#glossario" class="btn-ghost">Glossário Técnico</a>
+    </div>
+  </div>
+</section>
+
+<!-- INSTALAÇÃO -->
+<div class="section-dark" id="instalacao">
+  <div class="section-dark-inner">
+    <div class="install-grid">
+      <!-- Esquerda: steps -->
+      <div>
+        <span class="eyebrow reveal">Primeiros Passos</span>
+        <h2 class="section-title reveal reveal-d1">Como instalar<br>a <em>squad</em></h2>
+        <p class="section-desc reveal reveal-d2" style="margin-bottom:0">Em 4 passos simples você tem a squad instalada e pronta para rodar no seu projeto.</p>
+
+        <div class="install-step-list">
+          <div class="install-step reveal">
+            <div class="install-step-num isn-blue">1</div>
+            <div class="install-step-content">
+              <h4>Acesse o Marketplace</h4>
+              <p>Abra o navegador e acesse <strong>expxagents-marketplace</strong>. Localize a squad <strong>Plano de Mídia</strong> na lista ou use a busca.</p>
+            </div>
+          </div>
+          <div class="install-step reveal reveal-d1">
+            <div class="install-step-num isn-blue">2</div>
+            <div class="install-step-content">
+              <h4>Copie o comando de instalação</h4>
+              <p>Na página da squad, clique em <strong>Instalar</strong> para copiar o comando gerado automaticamente.</p>
+            </div>
+          </div>
+          <div class="install-step reveal reveal-d2">
+            <div class="install-step-num isn-blue">3</div>
+            <div class="install-step-content">
+              <h4>Cole no terminal e instale</h4>
+              <p>Abra o terminal no VS Code, cole o comando e pressione <strong>Enter</strong>. Aguarde a instalação concluir.</p>
+            </div>
+          </div>
+          <div class="install-step reveal reveal-d3">
+            <div class="install-step-num isn-blue">4</div>
+            <div class="install-step-content">
+              <h4>Execute no chat do Claude</h4>
+              <p>Com a squad instalada, abra o chat e rode o comando abaixo para iniciar o pipeline.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="install-note reveal">
+          <span>⚠</span>
+          <span><b>ExpxAgents não instalado?</b> Instale primeiro com <code style="font-family:var(--font-mono);font-size:.8em;color:var(--cyan)">npm i -g expxagents</code> antes de continuar.</span>
+        </div>
+      </div>
+
+      <!-- Direita: mocks visuais -->
+      <div class="reveal reveal-d1">
+        <!-- Browser mock: marketplace -->
+        <div class="browser-mock" style="margin-bottom:.875rem">
+          <div class="browser-bar">
+            <div class="browser-dots"><div class="browser-dot r"></div><div class="browser-dot y"></div><div class="browser-dot g"></div></div>
+            <div class="browser-url">expxagents-marketplace-production.up.railway.app/squads/@claudio-she/plano-de-midia-mentoria</div>
+          </div>
+          <div class="browser-body">
+            <div class="mkt-squad-card">
+              <div class="mkt-badge">✦ Squad Verificada</div>
+              <div class="mkt-name">Plano de Mídia Paga</div>
+              <div class="mkt-author">@claudio-she / plano-de-midia-mentoria</div>
+              <div class="mkt-meta">
+                <span class="mkt-tag">Meta Ads</span>
+                <span class="mkt-tag">B2B</span>
+                <span class="mkt-tag">8 Passos</span>
+                <span class="mkt-tag">6 Agentes</span>
+              </div>
+              <div class="mkt-install-btn">⬇ Instalar Squad</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Terminal: install + run -->
+        <div class="term-win" style="margin-bottom:.75rem">
+          <div class="term-bar">
+            <div class="term-dots"><div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div></div>
+            <span class="term-title">terminal — instalação</span>
+          </div>
+          <div class="term-body">
+            <span class="term-line"><span class="t-prompt">$</span> <span class="tg">expxagents</span> <span class="tm">install @claudio-she/plano-de-midia-mentoria</span></span>
+            <span class="term-line">&nbsp;</span>
+            <span class="term-line"><span class="tb">↓</span> <span class="tm">baixando squad...</span></span>
+            <span class="term-line"><span class="tb">↓</span> <span class="tm">configurando agentes...</span></span>
+            <span class="term-line"><span class="tb">↓</span> <span class="tm">registrando pipeline...</span></span>
+            <span class="term-line">&nbsp;</span>
+            <span class="term-line"><span class="tg">✓</span> <span class="tm">Squad instalada:</span> <span class="tw">plano-de-midia</span></span>
+          </div>
+        </div>
+
+        <!-- Comando para rodar -->
+        <div class="cmd-block">
+          <code>/expxagents run plano-de-midia</code>
+          <button class="copy-btn" onclick="copyCode(this,'/expxagents run plano-de-midia')">copiar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- O QUE É UM PLANO DE MÍDIA -->
+<section class="section" id="o-que-e">
+  <div style="text-align:center;margin-bottom:3rem">
+    <span class="eyebrow reveal" style="justify-content:center">Fundamentos</span>
+    <h2 class="section-title reveal reveal-d1" style="text-align:center">Um plano de mídia é a<br><em>planta de uma obra</em></h2>
+    <p class="section-desc reveal reveal-d2" style="margin:0 auto 0">Antes de erguer um prédio, o arquiteto desenha cada detalhe na planta. Antes de veicular um único anúncio, o estrategista cria o plano de mídia — o documento que guia cada decisão da campanha.</p>
+  </div>
+
+  <div class="analogy-comparison reveal">
+    <!-- Header -->
+    <div class="analogy-col-header left">🏗️ Construção</div>
+    <div class="analogy-connector-header">↔</div>
+    <div class="analogy-col-header right">📊 Plano de Mídia</div>
+
+    <!-- Linha 1 -->
+    <div class="analogy-row">
+      <div class="analogy-cell">
+        <span class="analogy-icon">📄</span>
+        <div class="analogy-item highlight">
+          <h4>Planta baixa</h4>
+          <p>O documento-guia que registra tudo antes de começar. Sem ela, ninguém sabe o que construir.</p>
+        </div>
+      </div>
+      <div class="analogy-connector-cell">↔</div>
+      <div class="analogy-cell right">
+        <span class="analogy-icon">📊</span>
+        <div class="analogy-item highlight">
+          <h4>Plano de mídia</h4>
+          <p>O documento que registra estratégia, campanhas, públicos e criativos antes de investir um centavo.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Linha 2 -->
+    <div class="analogy-row">
+      <div class="analogy-cell">
+        <span class="analogy-icon">🧱</span>
+        <div class="analogy-item">
+          <h4>Fundação</h4>
+          <p>A base que sustenta tudo. Se ela está errada, o prédio inteiro desaba.</p>
+        </div>
+      </div>
+      <div class="analogy-connector-cell">↔</div>
+      <div class="analogy-cell right">
+        <span class="analogy-icon">🎯</span>
+        <div class="analogy-item">
+          <h4>Estratégia de funil</h4>
+          <p>Define como o orçamento é distribuído e qual é a sequência lógica de conversão.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Linha 3 -->
+    <div class="analogy-row">
+      <div class="analogy-cell">
+        <span class="analogy-icon">🏢</span>
+        <div class="analogy-item">
+          <h4>Andares do prédio</h4>
+          <p>Cada andar serve um propósito diferente — térreo para receber, andares para funcionar.</p>
+        </div>
+      </div>
+      <div class="analogy-connector-cell">↔</div>
+      <div class="analogy-cell right">
+        <span class="analogy-icon">📶</span>
+        <div class="analogy-item">
+          <h4>TOFU · MOFU · BOFU</h4>
+          <p>Cada etapa serve um público diferente — atrair, aquecer e converter.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Linha 4 -->
+    <div class="analogy-row">
+      <div class="analogy-cell">
+        <span class="analogy-icon">🚪</span>
+        <div class="analogy-item">
+          <h4>Cômodos</h4>
+          <p>Divisões internas do prédio, cada uma com função e propósito definidos.</p>
+        </div>
+      </div>
+      <div class="analogy-connector-cell">↔</div>
+      <div class="analogy-cell right">
+        <span class="analogy-icon">📁</span>
+        <div class="analogy-item">
+          <h4>Campanhas</h4>
+          <p>Cada campanha tem um objetivo, público e orçamento próprios dentro do plano.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Linha 5 -->
+    <div class="analogy-row">
+      <div class="analogy-cell">
+        <span class="analogy-icon">⚡</span>
+        <div class="analogy-item">
+          <h4>Instalações elétricas</h4>
+          <p>Infraestrutura invisível. Sem ela, nada funciona — mas ninguém vê.</p>
+        </div>
+      </div>
+      <div class="analogy-connector-cell">↔</div>
+      <div class="analogy-cell right">
+        <span class="analogy-icon">🔌</span>
+        <div class="analogy-item">
+          <h4>Pixel e rastreamento</h4>
+          <p>Infraestrutura de dados que alimenta segmentação, retargeting e medição de resultados.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Linha 6 -->
+    <div class="analogy-row">
+      <div class="analogy-cell">
+        <span class="analogy-icon">🎨</span>
+        <div class="analogy-item">
+          <h4>Acabamento</h4>
+          <p>A camada final que o cliente vê. É o que define a primeira impressão.</p>
+        </div>
+      </div>
+      <div class="analogy-connector-cell">↔</div>
+      <div class="analogy-cell right">
+        <span class="analogy-icon">✍️</span>
+        <div class="analogy-item">
+          <h4>Copy e criativos</h4>
+          <p>O que o público vê. Headline, legenda e CTA — são o rosto de toda a estratégia.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Linha 7 -->
+    <div class="analogy-row">
+      <div class="analogy-cell">
+        <span class="analogy-icon">🔍</span>
+        <div class="analogy-item">
+          <h4>Vistoria final</h4>
+          <p>Inspeção rigorosa antes da entrega. Qualquer problema detectado aqui impede a liberação.</p>
+        </div>
+      </div>
+      <div class="analogy-connector-cell">↔</div>
+      <div class="analogy-cell right">
+        <span class="analogy-icon">✅</span>
+        <div class="analogy-item">
+          <h4>Revisão editorial</h4>
+          <p>O Marcos Vinicius inspeciona cada briefing. Nenhum criativo é liberado sem passar em todos os critérios.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OVERVIEW -->
+<section class="section" id="overview">
+  <span class="eyebrow reveal">O que é</span>
+  <h2 class="section-title reveal reveal-d1">Uma <em>fábrica de mídia</em><br>orquestrada por IA</h2>
+  <p class="section-desc reveal reveal-d2">A squad combina análise estratégica, planejamento técnico e criação de copy em um pipeline contínuo — do briefing ao documento final pronto para produção.</p>
+  <div class="overview-grid">
+    <div class="ov-card reveal"><div class="ov-icon">🎯</div><h3>Pipeline Sequencial</h3><p>Cada agente recebe o output do anterior e entrega para o próximo. Nenhum passo é pulado.</p></div>
+    <div class="ov-card reveal reveal-d1"><div class="ov-icon">📋</div><h3>Checkpoints Humanos</h3><p>Em 3 momentos críticos, a execução pausa e aguarda aprovação antes de continuar.</p></div>
+    <div class="ov-card reveal reveal-d2"><div class="ov-icon">🧠</div><h3>Memória Evolutiva</h3><p>A squad aprende com cada execução e aplica os padrões aprendidos nas rodadas seguintes.</p></div>
+    <div class="ov-card reveal reveal-d3"><div class="ov-icon">📄</div><h3>Entregável Estruturado</h3><p>O output final é um documento completo pronto para importar no produção ou produzir criativos.</p></div>
+  </div>
+</section>
+
+<!-- STEPS -->
+<div class="section-dark" id="pipeline">
+  <div class="section-dark-inner">
+    <span class="eyebrow reveal">Como funciona</span>
+    <h2 class="section-title reveal reveal-d1">Os <em>8 Passos</em> do Pipeline</h2>
+    <p class="section-desc reveal reveal-d2">Cada passo tem um agente responsável, um entregável claro e critérios de qualidade definidos.</p>
+
+    <!-- Passo 01 -->
+    <div class="step-block reveal">
+      <div>
+        <div class="step-counter">
+          <span class="step-num">01</span>
+          <span class="step-badge checkpoint">Checkpoint</span>
+        </div>
+        <!-- Terminal -->
+        <div class="term-win">
+          <div class="term-bar">
+            <div class="term-dots"><div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div></div>
+            <span class="term-title">briefing-analyst — coletando dados</span>
+          </div>
+          <div class="term-body">
+            <span class="term-line td"># iniciando entrevista estruturada</span>
+            <span class="term-line">&nbsp;</span>
+            <span class="term-line"><span class="tc">●</span> <span class="tm">Produto:</span> <span class="tw">SaaS de gestão para construtoras</span></span>
+            <span class="term-line"><span class="tc">●</span> <span class="tm">Ticket médio:</span> <span class="tw">R$ 2.400/mês</span></span>
+            <span class="term-line"><span class="tc">●</span> <span class="tm">Ciclo de venda:</span> <span class="tw">45 dias</span></span>
+            <span class="term-line"><span class="tc">●</span> <span class="tm">Budget mensal:</span> <span class="tw">R$ 3.000</span></span>
+            <span class="t-sep"></span>
+            <span class="term-line td"># diagnóstico do funil</span>
+            <span class="t-block"><span class="ta">⚠</span> <span class="tm">MOFU fraco — sem nurturing ativo</span></span>
+            <span class="t-block"><span class="ta">⚠</span> <span class="tm">Público quente inexplorado (visitantes)</span></span>
+            <span class="t-block"><span class="tg">✓</span> <span class="tm">Histórico de campanhas disponível</span></span>
+            <span class="term-line">&nbsp;</span>
+            <span class="term-line"><span class="tg">✓</span> <span class="tm">diagnóstico concluído</span></span>
+            <span class="term-line"><span class="ta">⚑</span> <span class="tm">aguardando aprovação humana...</span></span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="agent-chip"><span class="agent-chip-dot"></span> Briefing Analyst</div>
+        <h3 class="step-h">Briefing e <em>Diagnóstico Situacional</em></h3>
+        <p class="step-lead">O Briefing Analyst conduz uma entrevista estruturada para entender o contexto completo: produto, público, histórico de campanhas, budget e objetivo de negócio.</p>
+        <ul class="checklist">
+          <li><span class="ci">1</span>Coleta de dados: produto, ticket médio, ciclo de venda e público-alvo</li>
+          <li><span class="ci">2</span>Diagnóstico do funil: onde estão os maiores gaps de conversão</li>
+          <li><span class="ci">3</span>Análise de campanhas anteriores e benchmarks do setor</li>
+          <li><span class="ci">4</span>Identificação do nível de consciência predominante do público</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Passo 02 -->
+    <div class="step-block reverse reveal">
+      <div>
+        <div class="step-counter">
+          <span class="step-num">02</span>
+          <span class="step-badge checkpoint">Checkpoint</span>
+        </div>
+        <div class="term-win">
+          <div class="term-bar">
+            <div class="term-dots"><div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div></div>
+            <span class="term-title">media-strategist — alocando budget</span>
+          </div>
+          <div class="term-body">
+            <span class="term-line td"># distribuição do orçamento por funil</span>
+            <span class="term-line">&nbsp;</span>
+            <span class="term-line"><span class="tm">Budget total:</span> <span class="tw">R$ 3.000/mês</span></span>
+            <span class="term-line">&nbsp;</span>
+            <span class="term-line"><span class="tb">TOFU</span>  <span class="tg">████████░░</span>  <span class="tm">40% — R$ 1.200</span></span>
+            <span class="term-line"><span class="tb">MOFU</span>  <span class="tg">██████░░░░</span>  <span class="tm">30% — R$   900</span></span>
+            <span class="term-line"><span class="tb">BOFU</span>  <span class="tg">██████░░░░</span>  <span class="tm">30% — R$   900</span></span>
+            <span class="t-sep"></span>
+            <span class="term-line"><span class="tc">●</span> <span class="tm">CPL alvo:</span> <span class="tw">R$ 45–65</span></span>
+            <span class="term-line"><span class="tc">●</span> <span class="tm">Lookalike:</span> <span class="tw">1% clientes ativos</span></span>
+            <span class="term-line"><span class="tc">●</span> <span class="tm">Retargeting:</span> <span class="tw">visitantes 30d + leads frios</span></span>
+            <span class="term-line">&nbsp;</span>
+            <span class="term-line"><span class="tg">✓</span> <span class="tm">estratégia de funil definida</span></span>
+            <span class="term-line"><span class="ta">⚑</span> <span class="tm">aguardando aprovação humana...</span></span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="agent-chip"><span class="agent-chip-dot"></span> Media Strategist</div>
+        <h3 class="step-h">Estratégia de <em>Funil e Budget</em></h3>
+        <p class="step-lead">Com base no diagnóstico aprovado, o Media Strategist define a arquitetura do funil de tráfego e distribui o orçamento entre as etapas TOFU, MOFU e BOFU.</p>
+        <ul class="checklist">
+          <li><span class="ci">1</span>Mapeamento do funil: TOFU → MOFU → BOFU com percentuais</li>
+          <li><span class="ci">2</span>Distribuição do budget por etapa com justificativa estratégica</li>
+          <li><span class="ci">3</span>Definição de métricas-alvo: CPL, CTR e taxa de conversão por etapa</li>
+          <li><span class="ci">4</span>Estratégia de público: interesses, lookalike e retargeting</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Passo 03 -->
+    <div class="step-block reveal">
+      <div>
+        <div class="step-counter">
+          <span class="step-num">03</span>
+          <span class="step-badge auto">Automático</span>
+        </div>
+        <div class="term-win">
+          <div class="term-bar">
+            <div class="term-dots"><div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div></div>
+            <span class="term-title">meta-ads-planner — criando campanhas</span>
+          </div>
+          <div class="term-body">
+            <span class="term-line td"># estrutura de campanhas no gerenciador</span>
+            <span class="term-line">&nbsp;</span>
+            <span class="t-block">
+              <span class="term-line"><span class="tc">[1]</span> <span class="tw">SDM_TOFU_INT_VIDEO_C1</span></span>
+              <span class="t-indent"><span class="tm">Objetivo:</span> <span class="tb">OUTCOME_AWARENESS</span></span>
+              <span class="t-indent"><span class="tm">Público:</span> <span class="tw">Interesses amplos</span></span>
+            </span>
+            <span class="t-block">
+              <span class="term-line"><span class="tc">[2]</span> <span class="tw">SDM_MOFU_RET_FEED_C2</span></span>
+              <span class="t-indent"><span class="tm">Objetivo:</span> <span class="tb">OUTCOME_LEADS</span></span>
+              <span class="t-indent"><span class="tm">Público:</span> <span class="tw">Visitantes 60d</span></span>
+            </span>
+            <span class="t-block">
+              <span class="term-line"><span class="tc">[3]</span> <span class="tw">SDM_BOFU_RET_CAR_C3</span></span>
+              <span class="t-indent"><span class="tm">Objetivo:</span> <span class="tb">OUTCOME_LEADS</span></span>
+              <span class="t-indent"><span class="tm">Público:</span> <span class="tw">Visitantes LP 14d</span></span>
+            </span>
+            <span class="term-line">&nbsp;</span>
+            <span class="term-line"><span class="tg">✓</span> <span class="tm">3 campanhas configuradas</span></span>
+            <span class="term-line"><span class="tg">✓</span> <span class="tm">pixel vinculado: ID #382910441</span></span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="agent-chip"><span class="agent-chip-dot"></span> Meta Ads Planner</div>
+        <h3 class="step-h">Campanhas e <em>Estrutura Técnica</em></h3>
+        <p class="step-lead">O Meta Ads Planner traduz a estratégia em estrutura de campanhas no Gerenciador de Anúncios, com nomenclatura padronizada e configurações técnicas completas.</p>
+        <ul class="checklist">
+          <li><span class="ci">1</span>Estrutura: Campanha → Conjunto de Anúncios → Anúncio (ANI)</li>
+          <li><span class="ci">2</span>Objetivo por campanha (OUTCOME_LEADS, OUTCOME_AWARENESS)</li>
+          <li><span class="ci">3</span>Pixel, conversões customizadas e janela de atribuição</li>
+          <li><span class="ci">4</span>Nomenclatura padronizada por funil, formato e nível</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Passo 04 -->
+    <div class="step-block reverse reveal">
+      <div>
+        <div class="step-counter">
+          <span class="step-num">04</span>
+          <span class="step-badge auto">Automático</span>
+        </div>
+        <div class="term-win">
+          <div class="term-bar">
+            <div class="term-dots"><div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div></div>
+            <span class="term-title">meta-ads-planner — calendário criativo</span>
+          </div>
+          <div class="term-body">
+            <span class="term-line td"># planejamento semanal — Metodologia Andromeda</span>
+            <span class="term-line">&nbsp;</span>
+            <span class="term-line"><span class="tb">SEG</span>  <span class="tc">C1</span>  <span class="tw">Conteúdo de valor</span>   <span class="td">educativo</span></span>
+            <span class="term-line"><span class="tb">TER</span>  <span class="tc">C2</span>  <span class="tw">Hard Sell</span>           <span class="td">conversão</span></span>
+            <span class="term-line"><span class="tb">QUA</span>  <span class="tc">C1</span>  <span class="tw">Quebra de crença</span>    <span class="td">consciência</span></span>
+            <span class="term-line"><span class="tb">QUI</span>  <span class="tc">C3</span>  <span class="tw">Prova social</span>        <span class="td">fundo funil</span></span>
+            <span class="term-line"><span class="tb">SEX</span>  <span class="tc">C2</span>  <span class="tw">Demonstrativo</span>       <span class="td">solução</span></span>
+            <span class="t-sep"></span>
+            <span class="term-line"><span class="tg">✓</span> <span class="tm">cobertura Andromeda:</span> <span class="tc">C1 C2 C3</span></span>
+            <span class="term-line"><span class="tg">✓</span> <span class="tm">ângulos distintos:</span> <span class="tw">5/5</span></span>
+            <span class="term-line"><span class="tg">✓</span> <span class="tm">calendário gerado</span></span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="agent-chip"><span class="agent-chip-dot"></span> Meta Ads Planner</div>
+        <h3 class="step-h">Planejamento <em>Criativo Semanal</em></h3>
+        <p class="step-lead">O Meta Ads Planner define o calendário de criativos para a semana, distribuindo os ângulos pelos três níveis de consciência da Metodologia Andromeda.</p>
+        <ul class="checklist">
+          <li><span class="ci">1</span>Distribuição de criativos por nível: C1 (consciência), C2 (solução), C3 (conversão)</li>
+          <li><span class="ci">2</span>Definição do ângulo e insight de base para cada criativo</li>
+          <li><span class="ci">3</span>Técnica Andromeda adequada mapeada para cada nível</li>
+          <li><span class="ci">4</span>Visão geral da semana equilibrada em objetivos e formatos</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Passo 05 -->
+    <div class="step-block reveal">
+      <div>
+        <div class="step-counter">
+          <span class="step-num">05</span>
+          <span class="step-badge auto">Automático</span>
+        </div>
+        <div class="term-win">
+          <div class="term-bar">
+            <div class="term-dots"><div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div></div>
+            <span class="term-title">meta-ads-planner — segmentação</span>
+          </div>
+          <div class="term-body">
+            <span class="term-line td"># configurando públicos por conjunto</span>
+            <span class="term-line">&nbsp;</span>
+            <span class="term-line"><span class="tb">TOFU</span> <span class="td">— Conjunto 1</span></span>
+            <span class="t-indent"><span class="tc">▸</span> <span class="tw">ERP, Construção civil, Software gestão</span></span>
+            <span class="t-indent"><span class="tc">▸</span> <span class="tw">Lookalike 1% — clientes ativos BR</span></span>
+            <span class="t-indent"><span class="tc">▸</span> <span class="td">excl: base atual de leads</span></span>
+            <span class="term-line">&nbsp;</span>
+            <span class="term-line"><span class="tb">BOFU</span> <span class="td">— Conjunto 3</span></span>
+            <span class="t-indent"><span class="tc">▸</span> <span class="tw">Custom: visitors_lp_14d</span></span>
+            <span class="t-indent"><span class="tc">▸</span> <span class="tw">Feed + Stories — manual</span></span>
+            <span class="t-indent"><span class="tc">▸</span> <span class="tw">Lance: custo mais baixo</span></span>
+            <span class="term-line">&nbsp;</span>
+            <span class="term-line"><span class="tg">✓</span> <span class="tm">segmentações configuradas: 3 conjuntos</span></span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="agent-chip"><span class="agent-chip-dot"></span> Meta Ads Planner</div>
+        <h3 class="step-h">Segmentação e <em>Configurações Técnicas</em></h3>
+        <p class="step-lead">Detalhamento técnico das configurações de cada conjunto de anúncios: públicos personalizados, exclusões, posicionamentos e estratégia de lances.</p>
+        <ul class="checklist">
+          <li><span class="ci">1</span>Públicos personalizados: listas, engajamento, visitantes de site</li>
+          <li><span class="ci">2</span>Lookalike audiences: 1%, 2–5% e expansão progressiva</li>
+          <li><span class="ci">3</span>Posicionamentos manuais vs automáticos por objetivo de campanha</li>
+          <li><span class="ci">4</span>Estratégia de lances: custo mais baixo, custo-alvo ou ROAS mínimo</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Passo 06 -->
+    <div class="step-block reverse reveal">
+      <div>
+        <div class="step-counter">
+          <span class="step-num">06</span>
+          <span class="step-badge auto">Automático</span>
+        </div>
+        <div class="term-win">
+          <div class="term-bar">
+            <div class="term-dots"><div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div></div>
+            <span class="term-title">isabela-moura — escrevendo briefings</span>
+          </div>
+          <div class="term-body">
+            <span class="term-line td"># briefing 1/5 — C1 · Conteúdo de valor</span>
+            <span class="term-line">&nbsp;</span>
+            <span class="term-line"><span class="tm">HEADLINE:</span></span>
+            <span class="t-indent"><span class="tw">"Sua obra sangra dinheiro sem perceber"</span></span>
+            <span class="t-indent"><span class="tg">✓</span> <span class="td">7 palavras (máx: 8)</span></span>
+            <span class="term-line">&nbsp;</span>
+            <span class="term-line"><span class="tm">SUBHEADLINE:</span></span>
+            <span class="t-indent"><span class="tw">"Veja onde o budget some na gestão"</span></span>
+            <span class="t-indent"><span class="tg">✓</span> <span class="td">8 palavras (máx: 15)</span></span>
+            <span class="term-line">&nbsp;</span>
+            <span class="term-line"><span class="tm">CTA:</span>  <span class="tw">"Ver diagnóstico grátis"</span>  <span class="tg">✓</span></span>
+            <span class="term-line"><span class="tm">LEGENDA:</span> <span class="tw">3 parágrafos · 7 hashtags</span>  <span class="tg">✓</span></span>
+            <span class="t-sep"></span>
+            <span class="term-line"><span class="tg">✓✓</span> <span class="tm">5/5 briefings concluídos</span></span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="agent-chip"><span class="agent-chip-dot"></span> Isabela Moura (Copywriter)</div>
+        <h3 class="step-h">Copy dos <em>Anúncios</em></h3>
+        <p class="step-lead">A Isabela Moura escreve os 5 briefings semanais aplicando a Metodologia Andromeda e respeitando todos os limites técnicos do Manual de Proibições.</p>
+        <ul class="checklist">
+          <li><span class="ci">1</span>Headlines com máximo de 8 palavras, específicas e disruptivas</li>
+          <li><span class="ci">2</span>Legendas com mínimo de 3 parágrafos e 5–8 hashtags</li>
+          <li><span class="ci">3</span>Técnica C1/C2/C3 declarada e aplicada corretamente em cada briefing</li>
+          <li><span class="ci">4</span>Verificação automática contra o Manual de Proibições</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Passo 07 -->
+    <div class="step-block reveal">
+      <div>
+        <div class="step-counter">
+          <span class="step-num">07</span>
+          <span class="step-badge checkpoint">Checkpoint</span>
+        </div>
+        <div class="term-win">
+          <div class="term-bar">
+            <div class="term-dots"><div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div></div>
+            <span class="term-title">marcos-vinicius — revisão editorial</span>
+          </div>
+          <div class="term-body">
+            <span class="term-line td"># rodada 1 — aplicando 7 critérios</span>
+            <span class="term-line">&nbsp;</span>
+            <span class="term-line"><span class="tg">✓</span> <span class="tm">Briefing 1 — APROVADO</span></span>
+            <span class="term-line"><span class="ta">✗</span> <span class="tm">Briefing 2 — REPROVADO</span></span>
+            <span class="t-indent"><span class="td">headline: 9 palavras (máx: 8)</span></span>
+            <span class="t-indent"><span class="td">→ Isabela deve corrigir e reenviar</span></span>
+            <span class="term-line"><span class="tg">✓</span> <span class="tm">Briefing 3 — APROVADO</span></span>
+            <span class="term-line"><span class="tg">✓</span> <span class="tm">Briefing 4 — APROVADO</span></span>
+            <span class="term-line"><span class="ta">✗</span> <span class="tm">Briefing 5 — REPROVADO</span></span>
+            <span class="t-indent"><span class="td">legenda: estrutura binária detectada</span></span>
+            <span class="t-sep"></span>
+            <span class="term-line"><span class="tb">↻</span> <span class="tm">devolvendo para Isabela...</span></span>
+            <span class="term-line"><span class="tb">↻</span> <span class="tm">rodada 2 — revisando 5 briefings</span></span>
+            <span class="term-line"><span class="tg">✓✓</span> <span class="tm">TODOS OS 5 BRIEFINGS APROVADOS</span></span>
+            <span class="term-line"><span class="ta">⚑</span> <span class="tm">aguardando aprovação humana...</span></span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="agent-chip"><span class="agent-chip-dot"></span> Marcos Vinicius (Revisor)</div>
+        <h3 class="step-h">Revisão <em>Editorial</em></h3>
+        <p class="step-lead">O Marcos Vinicius aplica 7 dimensões de critérios a cada briefing. Se houver qualquer falha, o planejamento volta para a Isabela — sem exceção, sem concessão.</p>
+        <ul class="checklist">
+          <li><span class="ci">1</span>Verificação Andromeda: nível, técnica e distribuição C1/C2/C3</li>
+          <li><span class="ci">2</span>Contagem de palavras em cada campo (headline, subheadline, CTA)</li>
+          <li><span class="ci">3</span>Varredura completa do Manual de Proibições em todos os campos</li>
+          <li><span class="ci">4</span>Aderência ao setor, tom de voz e público do cliente</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Passo 08 -->
+    <div class="step-block reverse reveal">
+      <div>
+        <div class="step-counter">
+          <span class="step-num">08</span>
+          <span class="step-badge auto">Automático</span>
+        </div>
+        <div class="term-win">
+          <div class="term-bar">
+            <div class="term-dots"><div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div></div>
+            <span class="term-title">document-writer — gerando documento final</span>
+          </div>
+          <div class="term-body">
+            <span class="term-line td"># compilando outputs aprovados</span>
+            <span class="term-line">&nbsp;</span>
+            <span class="term-line"><span class="tg">✓</span> <span class="tm">sumário executivo</span></span>
+            <span class="term-line"><span class="tg">✓</span> <span class="tm">estratégia de funil + budget</span></span>
+            <span class="term-line"><span class="tg">✓</span> <span class="tm">estrutura técnica de campanhas</span></span>
+            <span class="term-line"><span class="tg">✓</span> <span class="tm">segmentações e configurações</span></span>
+            <span class="term-line"><span class="tg">✓</span> <span class="tm">5 briefings de copy aprovados</span></span>
+            <span class="t-sep"></span>
+            <span class="term-line td"># exportando para produção</span>
+            <span class="term-line"><span class="tc">▸</span> <span class="tw">plano-midia-v2.txt</span></span>
+            <span class="term-line">&nbsp;</span>
+            <span class="term-line"><span class="tg">✓✓</span> <span class="tm">documento gerado</span></span>
+            <span class="term-line"><span class="tg"> ●</span> <span class="tw">2.847 palavras · 8 seções</span></span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="agent-chip"><span class="agent-chip-dot"></span> Document Writer</div>
+        <h3 class="step-h">Documento Final <em>produção</em></h3>
+        <p class="step-lead">O Document Writer consolida todos os outputs aprovados em um documento final estruturado, pronto para importar no produção ou entregar para a equipe de produção.</p>
+        <ul class="checklist">
+          <li><span class="ci">1</span>Sumário executivo com objetivo, budget e KPIs esperados</li>
+          <li><span class="ci">2</span>Estratégia de funil com justificativas por etapa</li>
+          <li><span class="ci">3</span>Estrutura técnica de campanhas com nomenclatura padronizada</li>
+          <li><span class="ci">4</span>5 briefings aprovados com copy final pronto para produção</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- PIPELINE VISUAL -->
+<section class="section" id="pipeline-visual">
+  <span class="eyebrow reveal">Visão Geral</span>
+  <h2 class="section-title reveal reveal-d1">O Fluxo <em>Completo</em></h2>
+  <p class="section-desc reveal reveal-d2">Todos os 8 passos em sequência, com agentes responsáveis e pontos de intervenção humana.</p>
+  <div class="pipeline-list">
+    <div class="pl-item reveal"><div class="pl-num">1</div><div class="pl-content"><h4>Briefing e Diagnóstico Situacional</h4><p>Coleta de dados, análise de campanhas anteriores e diagnóstico do funil</p><span class="pl-agent">Briefing Analyst</span><div class="pl-tags"><span class="pl-tag checkpoint">Checkpoint</span><span class="pl-tag output">Diagnóstico</span></div></div></div>
+    <div class="pl-item reveal reveal-d1"><div class="pl-num">2</div><div class="pl-content"><h4>Estratégia de Funil e Budget</h4><p>Arquitetura TOFU/MOFU/BOFU e alocação de orçamento por etapa</p><span class="pl-agent">Media Strategist</span><div class="pl-tags"><span class="pl-tag checkpoint">Checkpoint</span><span class="pl-tag output">Estratégia</span></div></div></div>
+    <div class="pl-item reveal reveal-d2"><div class="pl-num">3</div><div class="pl-content"><h4>Campanhas + Estrutura Técnica</h4><p>Estrutura de campanhas no Gerenciador, objetivos, pixel e públicos</p><span class="pl-agent">Meta Ads Planner</span><div class="pl-tags"><span class="pl-tag auto">Automático</span><span class="pl-tag output">Estrutura</span></div></div></div>
+    <div class="pl-item reveal reveal-d3"><div class="pl-num">4</div><div class="pl-content"><h4>Planejamento Criativo Semanal</h4><p>Calendário de criativos com ângulos por nível de consciência C1/C2/C3</p><span class="pl-agent">Meta Ads Planner</span><div class="pl-tags"><span class="pl-tag auto">Automático</span><span class="pl-tag output">Calendário</span></div></div></div>
+    <div class="pl-item reveal"><div class="pl-num">5</div><div class="pl-content"><h4>Segmentação e Configurações Técnicas</h4><p>Públicos personalizados, lookalike, posicionamentos e estratégia de lances</p><span class="pl-agent">Meta Ads Planner</span><div class="pl-tags"><span class="pl-tag auto">Automático</span><span class="pl-tag output">Segmentação</span></div></div></div>
+    <div class="pl-item reveal reveal-d1"><div class="pl-num">6</div><div class="pl-content"><h4>Copy dos Anúncios</h4><p>5 briefings completos com headline, subheadline, CTA, ângulo e legenda</p><span class="pl-agent">Isabela Moura</span><div class="pl-tags"><span class="pl-tag auto">Automático</span><span class="pl-tag output">5 Briefings</span></div></div></div>
+    <div class="pl-item reveal reveal-d2"><div class="pl-num">7</div><div class="pl-content"><h4>Revisão Editorial</h4><p>Ciclo revisão ↔ correção com critérios Andromeda e Manual de Proibições</p><span class="pl-agent">Marcos Vinicius</span><div class="pl-tags"><span class="pl-tag checkpoint">Checkpoint</span><span class="pl-tag output">Aprovação</span></div></div></div>
+    <div class="pl-item reveal reveal-d3"><div class="pl-num">8</div><div class="pl-content"><h4>Documento Final</h4><p>Consolidação completa em documento estruturado pronto para produção</p><span class="pl-agent">Document Writer</span><div class="pl-tags"><span class="pl-tag auto">Automático</span><span class="pl-tag output">Doc Final</span></div></div></div>
+  </div>
+</section>
+
+<!-- AGENTS -->
+<div class="section-dark" id="agentes">
+  <div class="section-dark-inner">
+    <span class="eyebrow reveal">Os Especialistas</span>
+    <h2 class="section-title reveal reveal-d1">Os <em>6 Agentes</em> da Squad</h2>
+    <p class="section-desc reveal reveal-d2">Cada agente tem uma especialidade técnica única e atua apenas no seu passo. Nenhum agente ultrapassa os limites do seu papel.</p>
+    <div class="agents-grid">
+      <div class="agent-card reveal">
+        <div class="agent-header"><div class="agent-avatar">🔍</div><div class="agent-meta"><h3>Briefing Analyst</h3><span class="agent-role">Diagnóstico Situacional</span></div></div>
+        <p class="agent-desc">Especialista em entrevistas estruturadas. Coleta dados de produto, público, histórico de campanhas e contexto competitivo para fundamentar toda a estratégia.</p>
+        <div class="agent-step"><span class="agent-step-num">1</span> Passo 01 — Briefing</div>
+      </div>
+      <div class="agent-card reveal reveal-d1">
+        <div class="agent-header"><div class="agent-avatar">📊</div><div class="agent-meta"><h3>Media Strategist</h3><span class="agent-role">Estratégia e Budget</span></div></div>
+        <p class="agent-desc">Arquiteto do funil de tráfego. Define distribuição do orçamento entre TOFU, MOFU e BOFU, métricas por etapa e sequência lógica de conversão.</p>
+        <div class="agent-step"><span class="agent-step-num">2</span> Passo 02 — Estratégia</div>
+      </div>
+      <div class="agent-card reveal reveal-d2">
+        <div class="agent-header"><div class="agent-avatar">🎯</div><div class="agent-meta"><h3>Meta Ads Planner</h3><span class="agent-role">Estrutura + Planejamento</span></div></div>
+        <p class="agent-desc">Especialista técnico em Meta Ads. Cria a estrutura de campanhas, define segmentações, configura pixel e planeja o calendário semanal de criativos com Andromeda.</p>
+        <div class="agent-step"><span class="agent-step-num">3–5</span> Passos 03 a 05</div>
+      </div>
+      <div class="agent-card reveal reveal-d3">
+        <div class="agent-header"><div class="agent-avatar">✍️</div><div class="agent-meta"><h3>Isabela Moura</h3><span class="agent-role">Copywriter de Anúncios</span></div></div>
+        <p class="agent-desc">Copywriter especializada em Meta Ads B2B. Escreve os 5 briefings aplicando a técnica Andromeda correta por nível de consciência e respeitando todos os limites técnicos.</p>
+        <div class="agent-step"><span class="agent-step-num">6</span> Passo 06 — Copy</div>
+      </div>
+      <div class="agent-card reveal">
+        <div class="agent-header"><div class="agent-avatar">✅</div><div class="agent-meta"><h3>Marcos Vinicius</h3><span class="agent-role">Revisor Editorial</span></div></div>
+        <p class="agent-desc">Portão de qualidade da squad. Avalia em 7 dimensões, cita a frase exata em caso de falha e instrui a correção — nunca reescreve por conta própria.</p>
+        <div class="agent-step"><span class="agent-step-num">7</span> Passo 07 — Revisão</div>
+      </div>
+      <div class="agent-card reveal reveal-d1">
+        <div class="agent-header"><div class="agent-avatar">📄</div><div class="agent-meta"><h3>Document Writer</h3><span class="agent-role">Consolidação Final</span></div></div>
+        <p class="agent-desc">Consolida todos os outputs aprovados em um documento final estruturado com sumário executivo, estratégia, estrutura técnica e briefings prontos para produção.</p>
+        <div class="agent-step"><span class="agent-step-num">8</span> Passo 08 — Documento</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LEIS -->
+<section class="section" id="leis">
+  <span class="eyebrow reveal">Governança</span>
+  <h2 class="section-title reveal reveal-d1">As <em>7 Leis de Ouro</em></h2>
+  <p class="section-desc reveal reveal-d2">Regras invioláveis que governam o comportamento de todos os agentes. Nenhum output passa sem respeitar todas elas.</p>
+  <div class="leis-grid">
+    <div class="lei-item reveal"><div class="lei-num">01</div><div class="lei-content"><h3>Sem Dados, Sem Ação</h3><p>Nenhum agente avança sem ter todas as informações necessárias. Se falta dado, o agente faz a pergunta antes de produzir qualquer output — jamais inventa ou presume.</p></div></div>
+    <div class="lei-item reveal reveal-d1"><div class="lei-num">02</div><div class="lei-content"><h3>Checkpoints são Invioláveis</h3><p>Nos 3 pontos de checkpoint, o pipeline para completamente e aguarda aprovação explícita. Nenhuma automação sobrescreve um checkpoint — a decisão é sempre humana.</p></div></div>
+    <div class="lei-item reveal reveal-d2"><div class="lei-num">03</div><div class="lei-content"><h3>Cada Agente Faz Só o Seu Papel</h3><p>O Briefing Analyst não faz estratégia. O Revisor não reescreve copy. Cada agente age dentro do seu escopo definido — sem extrapolações ou ajudinhas fora do mandato.</p></div></div>
+    <div class="lei-item reveal reveal-d3"><div class="lei-num">04</div><div class="lei-content"><h3>Qualidade Não é Negociável</h3><p>O ciclo de revisão repete quantas vezes for necessário. Não existe "quase aprovado" — ou atende todos os critérios ou é reprovado. Sem concessões por esforço ou prazo.</p></div></div>
+    <div class="lei-item reveal"><div class="lei-num">05</div><div class="lei-content"><h3>Memória é Ativo Estratégico</h3><p>Cada execução gera aprendizados registrados. Padrões que funcionam são replicados, erros recorrentes são bloqueados. A squad melhora a cada rodada.</p></div></div>
+    <div class="lei-item reveal reveal-d1"><div class="lei-num">06</div><div class="lei-content"><h3>Transparência Total no Processo</h3><p>Cada agente explica o raciocínio das suas decisões. Nenhuma escolha estratégica é feita sem que o cliente entenda o porquê — o processo é auditável em cada etapa.</p></div></div>
+    <div class="lei-item reveal reveal-d2"><div class="lei-num">07</div><div class="lei-content"><h3>O Output Final é para Humanos</h3><p>O documento final deve ser legível e acionável por qualquer membro da equipe — sem depender de contexto interno da squad para ser compreendido.</p></div></div>
+  </div>
+</section>
+
+<!-- GLOSSÁRIO -->
+<div class="section-dark" id="glossario">
+  <div class="section-dark-inner">
+    <span class="eyebrow reveal">Referência Técnica</span>
+    <h2 class="section-title reveal reveal-d1">Glossário <em>de Termos</em></h2>
+    <p class="section-desc reveal reveal-d2">Os conceitos que você precisa dominar para entender e usar a squad com fluência.</p>
+
+    <!-- Dica de estudo -->
+    <div class="glos-tip reveal">
+      <span>💡</span>
+      <span>Dica de estudo: cubra a coluna direita e tente explicar cada termo com suas próprias palavras antes de revelar a definição.</span>
+    </div>
+
+    <!-- Destaque: 3 conceitos essenciais -->
+    <div class="glos-featured reveal reveal-d1">
+      <div class="glos-feat-card glos-feat-blue">
+        <div class="glos-feat-bg">FUNIL</div>
+        <div class="glos-feat-tag">Estratégia</div>
+        <h3 class="glos-feat-term">TOFU · MOFU · BOFU</h3>
+        <p class="glos-feat-def">As 3 etapas do funil de tráfego. TOFU atrai desconhecidos, MOFU aquece quem já interagiu, BOFU converte quem está pronto para decidir. O orçamento é distribuído entre elas conforme o objetivo.</p>
+      </div>
+      <div class="glos-feat-card glos-feat-amber">
+        <div class="glos-feat-bg">C1C2C3</div>
+        <div class="glos-feat-tag glos-feat-tag-amber">Andromeda</div>
+        <h3 class="glos-feat-term">Níveis de Consciência</h3>
+        <p class="glos-feat-def">C1 = público ainda não sabe que tem o problema. C2 = sabe do problema mas não conhece soluções. C3 = já avalia opções e está próximo de decidir. Cada nível exige uma técnica de copy diferente.</p>
+      </div>
+      <div class="glos-feat-card glos-feat-purple">
+        <div class="glos-feat-bg">CHK</div>
+        <div class="glos-feat-tag glos-feat-tag-purple">Squad</div>
+        <h3 class="glos-feat-term">Checkpoint</h3>
+        <p class="glos-feat-def">Ponto de pausa obrigatória no pipeline. A execução para completamente e aguarda aprovação humana explícita antes de continuar. Existem 3 checkpoints nesta squad.</p>
+      </div>
+    </div>
+
+    <!-- Meta Ads -->
+    <div class="glos-block reveal">
+      <div class="glos-block-header glos-header-cyan">
+        <span class="glos-block-icon">⚙️</span>
+        <span class="glos-block-label">Meta Ads — Plataforma</span>
+      </div>
+      <div class="glos-table">
+        <div class="glos-row">
+          <div class="glos-row-term"><span class="glos-row-name glos-name-cyan">Meta Pixel</span></div>
+          <div class="glos-row-def"><p class="glos-row-text">Código instalado no site que rastreia as ações dos visitantes e envia esses dados para o Gerenciador de Anúncios. Sem ele, não é possível fazer retargeting nem medir conversões com precisão.</p></div>
+        </div>
+        <div class="glos-row">
+          <div class="glos-row-term"><span class="glos-row-name glos-name-cyan">Lookalike Audience</span><span class="glos-row-abbr">Público Semelhante</span></div>
+          <div class="glos-row-def"><p class="glos-row-text">O Meta analisa uma lista semente (clientes, leads, visitantes) e encontra novas pessoas com perfil parecido. Quanto menor o percentual (1%), mais parecidos com a semente.</p><p class="glos-row-ex">Lookalike 1% de clientes ativos = público novo muito qualificado.</p></div>
+        </div>
+        <div class="glos-row">
+          <div class="glos-row-term"><span class="glos-row-name glos-name-cyan">OUTCOME_LEADS</span><span class="glos-row-abbr">objetivo de campanha</span></div>
+          <div class="glos-row-def"><p class="glos-row-text">Objetivo de campanha focado em geração de leads. O algoritmo entrega o anúncio para pessoas com maior probabilidade de preencher um formulário ou acessar uma landing page.</p></div>
+        </div>
+        <div class="glos-row">
+          <div class="glos-row-term"><span class="glos-row-name glos-name-cyan">ANI</span><span class="glos-row-abbr">Ad Name Identifier</span></div>
+          <div class="glos-row-def"><p class="glos-row-text">Convenção de nomenclatura para nomear anúncios de forma padronizada. O nome codifica o funil, formato, nível de consciência e tipo de público.</p><p class="glos-row-ex">SDM_TOFU_INT_VIDEO_C1 → cliente + etapa + segmentação + formato + nível.</p></div>
+        </div>
+        <div class="glos-row">
+          <div class="glos-row-term"><span class="glos-row-name glos-name-cyan">CTR</span><span class="glos-row-abbr">Click-Through Rate</span></div>
+          <div class="glos-row-def"><p class="glos-row-text">Porcentagem de pessoas que viram o anúncio e clicaram. Um CTR baixo indica que o criativo não está gerando interesse suficiente no público-alvo.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Andromeda -->
+    <div class="glos-block reveal">
+      <div class="glos-block-header glos-header-amber">
+        <span class="glos-block-icon">🧠</span>
+        <span class="glos-block-label">Metodologia Andromeda — Copy</span>
+      </div>
+      <div class="glos-table">
+        <div class="glos-row">
+          <div class="glos-row-term"><span class="glos-row-name glos-name-amber">C1</span><span class="glos-row-abbr">Não-Consciente</span></div>
+          <div class="glos-row-def"><p class="glos-row-text">O público ainda não sabe que tem o problema ou não percebe sua magnitude. Criativos C1 educam e despertam consciência — nunca vendem diretamente, nunca mencionam produto ou preço.</p></div>
+        </div>
+        <div class="glos-row">
+          <div class="glos-row-term"><span class="glos-row-name glos-name-amber">C2</span><span class="glos-row-abbr">Consciente do Problema</span></div>
+          <div class="glos-row-def"><p class="glos-row-text">O público sabe que tem o problema mas ainda não conhece a solução. Criativos C2 apresentam a solução — técnicas válidas: Hard Sell, demonstrativo e comparativo.</p></div>
+        </div>
+        <div class="glos-row">
+          <div class="glos-row-term"><span class="glos-row-name glos-name-amber">C3</span><span class="glos-row-abbr">Consciente da Solução</span></div>
+          <div class="glos-row-def"><p class="glos-row-text">O público já conhece a solução e está avaliando opções. Criativos C3 convertem usando prova social, quebra de objeção específica e urgência real.</p></div>
+        </div>
+        <div class="glos-row">
+          <div class="glos-row-term"><span class="glos-row-name glos-name-amber">Hard Sell</span><span class="glos-row-abbr">técnica C2</span></div>
+          <div class="glos-row-def"><p class="glos-row-text">Estrutura de legenda com 7 elementos obrigatórios em sequência: gancho → dor breve → motivo para agir → credibilidade → oferta → urgência → CTA. Falta de mais de 2 elementos = reprovado.</p></div>
+        </div>
+        <div class="glos-row">
+          <div class="glos-row-term"><span class="glos-row-name glos-name-amber">Quebra de Objeção</span><span class="glos-row-abbr">técnica C3</span></div>
+          <div class="glos-row-def"><p class="glos-row-text">Identifica a objeção específica que impede a compra (preço, tempo, confiança, adequação) e a desmonta com um argumento concreto e verificável — sem generalidades.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Copywriting -->
+    <div class="glos-block reveal">
+      <div class="glos-block-header glos-header-green">
+        <span class="glos-block-icon">✍️</span>
+        <span class="glos-block-label">Copywriting — Estrutura do Briefing</span>
+      </div>
+      <div class="glos-table">
+        <div class="glos-row">
+          <div class="glos-row-term"><span class="glos-row-name glos-name-green">Headline</span><span class="glos-row-abbr">máx. 8 palavras</span></div>
+          <div class="glos-row-def"><p class="glos-row-text">Título principal do anúncio. Deve parar o scroll, ser específica ao setor do cliente e nunca usar superlativos vazios ("incrível", "revolucionário") ou promessas mágicas genéricas.</p></div>
+        </div>
+        <div class="glos-row">
+          <div class="glos-row-term"><span class="glos-row-name glos-name-green">CTA</span><span class="glos-row-abbr">máx. 5 palavras</span></div>
+          <div class="glos-row-def"><p class="glos-row-text">Call to Action — a chamada para ação. Instrução clara e direta, específica ao produto. Nunca genérico ("Saiba mais", "Fale com um especialista").</p><p class="glos-row-ex">"Ver diagnóstico grátis" é específico. "Transforme sua gestão agora" é genérico.</p></div>
+        </div>
+        <div class="glos-row">
+          <div class="glos-row-term"><span class="glos-row-name glos-name-green">Gancho</span><span class="glos-row-abbr">1º parágrafo</span></div>
+          <div class="glos-row-def"><p class="glos-row-text">Primeiro parágrafo da legenda. Deve ser completamente distinto da headline — não a repete, não a reformula. Captura a atenção por um caminho diferente antes de desenvolver o argumento.</p></div>
+        </div>
+        <div class="glos-row">
+          <div class="glos-row-term"><span class="glos-row-name glos-name-green">Manual de Proibições</span></div>
+          <div class="glos-row-def"><p class="glos-row-text">Lista de expressões, estruturas e padrões de copy que são automaticamente reprovados por serem clichês, genéricos ou manipulativos. Qualquer ocorrência, em qualquer campo, reprova o briefing inteiro.</p><p class="glos-row-ex">"Apagando incêndios", "A verdade é que...", estrutura "Chega de X, Y, Z".</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Squad -->
+    <div class="glos-block reveal">
+      <div class="glos-block-header glos-header-purple">
+        <span class="glos-block-icon">🤖</span>
+        <span class="glos-block-label">Estrutura da Squad</span>
+      </div>
+      <div class="glos-table">
+        <div class="glos-row">
+          <div class="glos-row-term"><span class="glos-row-name glos-name-purple">Squad</span></div>
+          <div class="glos-row-def"><p class="glos-row-text">Time de agentes de IA com especialidades distintas que operam em pipeline. Cada agente tem um papel fixo e não ultrapassa seus limites para fazer o trabalho de outro.</p></div>
+        </div>
+        <div class="glos-row">
+          <div class="glos-row-term"><span class="glos-row-name glos-name-purple">Pipeline</span></div>
+          <div class="glos-row-def"><p class="glos-row-text">Sequência ordenada de passos de uma execução. O output de um passo é sempre o input do próximo. Nenhum passo pode ser pulado ou reordenado.</p></div>
+        </div>
+        <div class="glos-row">
+          <div class="glos-row-term"><span class="glos-row-name glos-name-purple">Handoff</span></div>
+          <div class="glos-row-def"><p class="glos-row-text">A entrega formal de um agente para o próximo. Inclui o entregável do passo atual mais o contexto necessário para o agente receptor continuar sem perder informação.</p></div>
+        </div>
+        <div class="glos-row">
+          <div class="glos-row-term"><span class="glos-row-name glos-name-purple">state.json</span><span class="glos-row-abbr">arquivo de estado</span></div>
+          <div class="glos-row-def"><p class="glos-row-text">Arquivo que registra o estado atual de cada execução: passo em andamento, status de cada agente (idle/working/done), versão do output e timestamps. É o "painel de controle" da squad.</p></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FINAL -->
+<section class="final-section" id="final">
+  <span class="eyebrow reveal" style="justify-content:center">Material de Estudos</span>
+  <h2 class="final-title reveal reveal-d1">Dominar a squad é dominar<br><span>todo o processo de mídia</span></h2>
+  <p class="final-desc reveal reveal-d2">Cada passo foi desenhado para garantir que o plano final seja tecnicamente sólido, estrategicamente coerente e pronto para gerar resultados reais.</p>
+  <div class="hero-ctas reveal reveal-d3">
+    <button class="btn-primary" onclick="window.print()">Exportar PDF ↓</button>
+    <a href="#top" class="btn-ghost">Voltar ao Início ↑</a>
+  </div>
+</section>
+
+<button id="export-btn" onclick="window.print()">⬇ Exportar PDF</button>
+
+<script>
+// Progress bar
+window.addEventListener('scroll',()=>{
+  const d=document.documentElement;
+  document.getElementById('progress-bar').style.width=(d.scrollTop/(d.scrollHeight-d.clientHeight)*100)+'%';
+});
+
+// Nav steps
+const navSteps=document.querySelectorAll('.nav-step');
+const secs=['#overview','#pipeline','#agentes','#leis','#glossario','#final'];
+window.addEventListener('scroll',()=>{
+  const y=window.scrollY+80;
+  secs.forEach((s,i)=>{
+    const el=document.querySelector(s);
+    if(el&&y>=el.offsetTop){navSteps.forEach(x=>x.classList.remove('active'));if(navSteps[i])navSteps[i].classList.add('active')}
+  });
+});
+
+// Reveal
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}})},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// Particles
+const pc=document.getElementById('particles');
+for(let i=0;i<60;i++){
+  const p=document.createElement('div');p.className='particle';
+  p.style.cssText=`left:${Math.random()*100}%;width:${1+Math.random()*2}px;height:${1+Math.random()*2}px;animation-duration:${8+Math.random()*18}s;animation-delay:${Math.random()*12}s;`;
+  pc.appendChild(p);
+}
+
+// Copy button
+function copyCode(btn,text){
+  navigator.clipboard.writeText(text).then(()=>{
+    btn.textContent='copiado!';btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='copiar';btn.classList.remove('copied')},2000);
+  });
+}
+
+// Print styles
+const s=document.createElement('style');
+s.textContent=`
+@page{size:A4 portrait;margin:1.5cm 1.8cm}
+@media print{
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  #export-btn,#progress-bar,.nav,.hero-particles,body::after{display:none!important}
+  .reveal{opacity:1!important;transform:none!important}
+  body{background:#00000f;color:#c8ccd4;font-size:9.5pt;line-height:1.55}
+  /* remove min-height e padding excessivo das seções */
+  .hero{min-height:auto!important;padding:2rem 0;page-break-after:always}
+  .hero-stats{gap:1.5rem}
+  .stat-num{font-size:2rem}
+  .section,.section-dark{padding:1.5rem 0;page-break-after:always}
+  .section-dark-inner,.section{max-width:100%}
+  /* impede quebra no meio de elementos */
+  .step-block{page-break-inside:avoid;padding:1rem 0}
+  .term-win{page-break-inside:avoid}
+  .lei-item{page-break-inside:avoid}
+  .glos-block{page-break-inside:avoid}
+  .glos-feat-card{page-break-inside:avoid}
+  .agent-card{page-break-inside:avoid}
+  .pl-item{page-break-inside:avoid}
+  .analogy-comparison{page-break-inside:avoid}
+  .install-grid{page-break-inside:avoid}
+  /* compactar títulos e espaçamentos */
+  .section-title{font-size:1.5rem!important;margin-bottom:.5rem}
+  .section-desc{margin-bottom:1.5rem;font-size:.875rem}
+  .hero h1{font-size:2.25rem!important}
+  .step-h{font-size:1.1rem!important}
+  .step-num{font-size:2.5rem!important}
+  .lei-num{font-size:2.5rem!important}
+  .agents-grid{grid-template-columns:repeat(2,1fr)!important}
+  .overview-grid{grid-template-columns:repeat(2,1fr)!important}
+  .glos-featured{grid-template-columns:repeat(3,1fr)!important}
+  .final-section{padding:2rem 0;page-break-after:avoid}
+}`;
+document.head.appendChild(s);
+</script>
+</body>
+</html>
