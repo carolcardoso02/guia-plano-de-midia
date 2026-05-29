@@ -770,7 +770,7 @@ body::after{
                 <span class="mkt-tag">8 Passos</span>
                 <span class="mkt-tag">6 Agentes</span>
               </div>
-              <div class="mkt-install-btn">⬇ Instalar Squad</div>
+              <a href="https://expxagents-marketplace-production.up.railway.app/squads/@claudio-she/plano-de-midia-mentoria" target="_blank" class="mkt-install-btn" style="text-decoration:none">⬇ Instalar Squad</a>
             </div>
           </div>
         </div>
@@ -782,7 +782,7 @@ body::after{
             <span class="term-title">terminal — instalação</span>
           </div>
           <div class="term-body">
-            <span class="term-line"><span class="t-prompt">$</span> <span class="tg">expxagents</span> <span class="tm">install @claudio-she/plano-de-midia-mentoria</span></span>
+            <span class="term-line"><span class="t-prompt">$</span> <span class="tg">expxagents</span> <span class="tm">add @claudio-she/plano-de-midia-mentoria</span></span>
             <span class="term-line">&nbsp;</span>
             <span class="term-line"><span class="tb">↓</span> <span class="tm">baixando squad...</span></span>
             <span class="term-line"><span class="tb">↓</span> <span class="tm">configurando agentes...</span></span>
@@ -1599,39 +1599,98 @@ function copyCode(btn,text){
 // Print styles
 const s=document.createElement('style');
 s.textContent=`
-@page{size:A4 portrait;margin:1.5cm 1.8cm}
+@page{size:A4 portrait;margin:1.4cm 1.6cm}
 @media print{
-  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
-  #export-btn,#progress-bar,.nav,.hero-particles,body::after{display:none!important}
-  .reveal{opacity:1!important;transform:none!important}
-  body{background:#00000f;color:#c8ccd4;font-size:9.5pt;line-height:1.55}
-  /* remove min-height e padding excessivo das seções */
-  .hero{min-height:auto!important;padding:2rem 0;page-break-after:always}
-  .hero-stats{gap:1.5rem}
-  .stat-num{font-size:2rem}
-  .section,.section-dark{padding:1.5rem 0;page-break-after:always}
-  .section-dark-inner,.section{max-width:100%}
-  /* impede quebra no meio de elementos */
-  .step-block{page-break-inside:avoid;padding:1rem 0}
-  .term-win{page-break-inside:avoid}
-  .lei-item{page-break-inside:avoid}
-  .glos-block{page-break-inside:avoid}
-  .glos-feat-card{page-break-inside:avoid}
-  .agent-card{page-break-inside:avoid}
-  .pl-item{page-break-inside:avoid}
-  .analogy-comparison{page-break-inside:avoid}
-  .install-grid{page-break-inside:avoid}
-  /* compactar títulos e espaçamentos */
-  .section-title{font-size:1.5rem!important;margin-bottom:.5rem}
-  .section-desc{margin-bottom:1.5rem;font-size:.875rem}
-  .hero h1{font-size:2.25rem!important}
-  .step-h{font-size:1.1rem!important}
-  .step-num{font-size:2.5rem!important}
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;box-sizing:border-box!important}
+  #export-btn,#progress-bar,.nav,.hero-particles,.hero-ctas,body::after{display:none!important}
+  .reveal{opacity:1!important;transform:none!important;transition:none!important}
+
+  body{background:#00000f!important;color:#c8ccd4!important;font-size:9pt!important;line-height:1.5!important;margin:0!important}
+
+  /* hero compacto */
+  .hero{min-height:auto!important;padding:2.5rem 0 2rem!important;text-align:center}
+  .hero-bg{display:none}
+  .hero h1{font-size:2rem!important;margin-bottom:.75rem!important}
+  .hero-sub{font-size:.875rem!important;margin-bottom:1.25rem!important}
+  .hero-stats{gap:2rem!important;margin-bottom:0!important}
+  .stat-num{font-size:2rem!important}
+  .stat-label{font-size:.7rem!important}
+  .hero-badge{margin-bottom:.875rem!important}
+
+  /* seções — sem padding excessivo */
+  .section{padding:1.75rem 0!important;max-width:100%!important}
+  .section-dark{padding:1.75rem 0!important;max-width:100%!important}
+  .section-dark-inner{max-width:100%!important}
+
+  /* títulos */
+  .section-title{font-size:1.375rem!important;margin-bottom:.4rem!important;line-height:1.15!important}
+  .section-desc{font-size:.8rem!important;margin-bottom:1.25rem!important;max-width:100%!important}
+  .eyebrow{margin-bottom:.5rem!important}
+
+  /* step blocks */
+  .step-block{padding:.875rem 0!important;gap:1.5rem!important;break-inside:avoid}
+  .step-num{font-size:2.5rem!important;min-width:56px!important}
+  .step-h{font-size:1rem!important;margin-bottom:.4rem!important}
+  .step-lead{font-size:.8rem!important;margin-bottom:.875rem!important}
+  .checklist li{font-size:.775rem!important;gap:.5rem!important}
+
+  /* terminal */
+  .term-win{break-inside:avoid}
+  .term-body{padding:.875rem 1rem!important;font-size:.72rem!important;line-height:1.7!important}
+  .term-bar{padding:.4rem .875rem!important}
+
+  /* agents */
+  .agents-grid{grid-template-columns:repeat(2,1fr)!important;gap:.625rem!important}
+  .agent-card{padding:1rem!important;break-inside:avoid}
+  .agent-desc{font-size:.75rem!important}
+
+  /* leis */
   .lei-num{font-size:2.5rem!important}
-  .agents-grid{grid-template-columns:repeat(2,1fr)!important}
-  .overview-grid{grid-template-columns:repeat(2,1fr)!important}
-  .glos-featured{grid-template-columns:repeat(3,1fr)!important}
-  .final-section{padding:2rem 0;page-break-after:avoid}
+  .lei-item{padding:1.125rem 0!important;break-inside:avoid}
+  .lei-content h3{font-size:.875rem!important}
+  .lei-content p{font-size:.775rem!important}
+
+  /* overview */
+  .overview-grid{grid-template-columns:repeat(2,1fr)!important;gap:.625rem!important}
+  .ov-card{padding:1rem!important;break-inside:avoid}
+
+  /* pipeline list */
+  .pl-item{padding:.875rem 0!important;break-inside:avoid}
+  .pl-content h4{font-size:.8rem!important}
+  .pl-content p{font-size:.75rem!important}
+
+  /* analogy */
+  .analogy-comparison{break-inside:avoid}
+  .analogy-cell{padding:.75rem 1rem!important}
+  .analogy-item h4{font-size:.8rem!important}
+  .analogy-item p{font-size:.725rem!important}
+  .analogy-icon{font-size:1rem!important}
+
+  /* install */
+  .install-grid{gap:1.5rem!important;break-inside:avoid}
+  .install-step-content h4{font-size:.8rem!important}
+  .install-step-content p{font-size:.75rem!important}
+  .browser-body{padding:.875rem!important}
+  .mkt-name{font-size:.875rem!important}
+
+  /* glossário */
+  .glos-featured{grid-template-columns:repeat(3,1fr)!important;gap:.625rem!important;margin-bottom:1.5rem!important}
+  .glos-feat-card{padding:1.125rem!important;break-inside:avoid}
+  .glos-feat-term{font-size:.9rem!important}
+  .glos-feat-def{font-size:.75rem!important}
+  .glos-block{margin-bottom:1.25rem!important;break-inside:avoid}
+  .glos-row-text{font-size:.75rem!important}
+  .glos-row-name{font-size:.8rem!important}
+  .glos-row-term,.glos-row-def{padding:.875rem 1rem!important}
+  .glos-tip{padding:.75rem 1rem!important;font-size:.75rem!important;margin-bottom:1.25rem!important}
+
+  /* cmd block */
+  .cmd-block{padding:.625rem 1rem!important}
+  .cmd-block code{font-size:.775rem!important}
+
+  /* final */
+  .final-section{padding:2rem 0!important}
+  .final-title{font-size:1.5rem!important}
 }`;
 document.head.appendChild(s);
 </script>
