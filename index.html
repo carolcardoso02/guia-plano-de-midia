@@ -1599,23 +1599,24 @@ function copyCode(btn,text){
 // Print styles
 const s=document.createElement('style');
 s.textContent=`
-@page{size:A4 portrait;margin:1.4cm 1.6cm}
+@page{size:A4 portrait;margin:0}
 @media print{
   *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;box-sizing:border-box!important}
-  #export-btn,#progress-bar,.nav,.hero-particles,.hero-ctas,body::after{display:none!important}
+  #export-btn,#progress-bar,.nav,.hero-particles,.hero-bg,.hero-ctas,body::after{display:none!important;height:0!important;overflow:hidden!important}
   .reveal{opacity:1!important;transform:none!important;transition:none!important}
 
-  body{background:#00000f!important;color:#c8ccd4!important;font-size:9pt!important;line-height:1.5!important;margin:0!important}
+  html{background:#00000f!important}
+  body{background:#00000f!important;color:#c8ccd4!important;font-size:9pt!important;line-height:1.5!important;margin:0!important;padding:1.2cm 1.5cm!important}
 
-  /* hero compacto */
-  .hero{min-height:auto!important;padding:2.5rem 0 2rem!important;text-align:center}
-  .hero-bg{display:none}
-  .hero h1{font-size:2rem!important;margin-bottom:.75rem!important}
-  .hero-sub{font-size:.875rem!important;margin-bottom:1.25rem!important}
+  /* hero compacto — sem espaço vazio */
+  .hero{min-height:0!important;height:auto!important;padding:2rem 0 1.5rem!important;text-align:center!important;display:block!important;position:static!important}
+  .hero-content{position:static!important;z-index:auto!important}
+  .hero h1{font-size:2rem!important;margin-bottom:.625rem!important}
+  .hero-sub{font-size:.875rem!important;margin-bottom:1rem!important}
   .hero-stats{gap:2rem!important;margin-bottom:0!important}
-  .stat-num{font-size:2rem!important}
+  .stat-num{font-size:1.875rem!important}
   .stat-label{font-size:.7rem!important}
-  .hero-badge{margin-bottom:.875rem!important}
+  .hero-badge{margin-bottom:.75rem!important}
 
   /* seções — sem padding excessivo */
   .section{padding:1.75rem 0!important;max-width:100%!important}
