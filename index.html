@@ -413,6 +413,42 @@ body::after{
 
 /* ── INSTALL SECTION ── */
 .install-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+
+/* aviso atualizações automáticas (esquerda) */
+.install-auto-update{
+  display:flex;gap:.875rem;align-items:flex-start;
+  margin-top:1.25rem;
+  background:rgba(56,177,9,.07);
+  border:1px solid rgba(56,177,9,.2);
+  border-radius:var(--radius-md);
+  padding:.875rem 1rem;
+}
+.install-au-icon{
+  width:32px;height:32px;border-radius:50%;flex-shrink:0;
+  background:rgba(56,177,9,.12);border:1px solid rgba(56,177,9,.3);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;color:var(--green-400);
+}
+.install-au-content h4{
+  font-family:var(--font-display);font-size:.8rem;font-weight:700;
+  color:var(--green-300);margin-bottom:.25rem;
+}
+.install-au-content p{font-size:.775rem;color:var(--base-400);line-height:1.6}
+
+/* bloco step-05 atualização (direita, opacidade reduzida) */
+.install-update-notice{
+  border:1px solid var(--base-700);border-radius:var(--radius-md);
+  padding:.875rem 1rem;margin-top:.75rem;
+}
+.iun-header{display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem}
+.iun-num{
+  width:28px;height:28px;border-radius:50%;flex-shrink:0;
+  background:var(--base-800);border:1px solid var(--base-600);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-size:.7rem;font-weight:700;color:var(--base-400);
+}
+.iun-title{display:block;font-family:var(--font-display);font-size:.8rem;font-weight:700;color:var(--base-300)}
+.iun-sub{display:block;font-size:.7rem;color:var(--base-500);margin-top:.125rem}
 .install-step-list{display:flex;flex-direction:column;gap:1.125rem;margin-top:1.75rem}
 .install-step{display:flex;gap:1rem;align-items:flex-start}
 .install-step-num{
@@ -845,6 +881,14 @@ body::after{
           </div>
         </div>
 
+        <div class="install-auto-update reveal reveal-d4">
+          <div class="install-au-icon">↻</div>
+          <div class="install-au-content">
+            <h4>Atualizações automáticas</h4>
+            <p>A squad está sempre evoluindo. Ao executar, ela verifica se há uma versão mais recente e pergunta se você deseja atualizar antes de rodar.</p>
+          </div>
+        </div>
+
         <div class="install-note reveal">
           <span>⚠</span>
           <span><b>ExpxAgents não instalado?</b> Instale primeiro com <code style="font-family:var(--font-mono);font-size:.8em;color:var(--cyan)">npm i -g expxagents</code> antes de continuar.</span>
@@ -896,6 +940,41 @@ body::after{
         <div class="cmd-block">
           <code>/expxagents run plano-de-midia</code>
           <button class="copy-btn" onclick="copyCode(this,'/expxagents run plano-de-midia')">copiar</button>
+        </div>
+
+        <!-- Passo 05 — para quem já tem instalado (opacidade reduzida) -->
+        <div class="install-update-notice reveal reveal-d2" style="opacity:.55">
+          <div class="iun-header">
+            <div class="iun-num">05</div>
+            <div>
+              <span class="iun-title">Quem já tem instalado</span>
+              <span class="iun-sub">Atualize para receber as novidades</span>
+            </div>
+          </div>
+          <div class="term-win" style="margin-bottom:.5rem">
+            <div class="term-bar">
+              <div class="term-dots"><div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div></div>
+              <span class="term-title">atualizar squad</span>
+            </div>
+            <div class="term-body" style="padding:.625rem 1rem">
+              <span class="term-line"><span class="t-prompt">$</span> <span class="tg">expxagents</span> <span class="tm">update @claudio-she/plano-de-midia-mentoria</span></span>
+              <span class="term-line">&nbsp;</span>
+              <span class="term-line"><span class="tg">✓</span> <span class="tm">Squad atualizada com sucesso</span></span>
+            </div>
+          </div>
+          <div class="term-win">
+            <div class="term-bar">
+              <div class="term-dots"><div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div></div>
+              <span class="term-title">confirmar versão</span>
+            </div>
+            <div class="term-body" style="padding:.625rem 1rem">
+              <span class="term-line"><span class="t-prompt">$</span> <span class="tg">expxagents</span> <span class="tm">info @claudio-she/plano-de-midia-mentoria</span></span>
+              <span class="term-line">&nbsp;</span>
+              <span class="term-line"><span class="tc">Squad:</span>  <span class="tw">plano-de-midia-mentoria</span></span>
+              <span class="term-line"><span class="tc">Versão:</span> <span class="tg">v2.0.0</span>  <span class="ta">✓ atualizada</span></span>
+              <span class="term-line"><span class="tc">Autor:</span>  <span class="tw">@claudio-she</span></span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
